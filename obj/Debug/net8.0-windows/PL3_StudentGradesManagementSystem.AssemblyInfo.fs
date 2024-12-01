@@ -10,7 +10,7 @@ open System.Reflection
 [<assembly: System.Reflection.AssemblyCompanyAttribute("PL3_StudentGradesManagementSystem")>]
 [<assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")>]
 [<assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")>]
-[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+56b931bd667d44dcbe5c840b0b53a80434a585b9")>]
+[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1584c7c9d078f48b74b6ce9304bae5f5eb37cd64")>]
 [<assembly: System.Reflection.AssemblyProductAttribute("PL3_StudentGradesManagementSystem")>]
 [<assembly: System.Reflection.AssemblyTitleAttribute("PL3_StudentGradesManagementSystem")>]
 [<assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")>]
