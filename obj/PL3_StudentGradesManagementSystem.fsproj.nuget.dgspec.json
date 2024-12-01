@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\MYTry\\PL3_StudentGradesManagementSystem.fsproj": {}
+    "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj": {}
   },
   "projects": {
-    "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\MYTry\\PL3_StudentGradesManagementSystem.fsproj": {
+    "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\MYTry\\PL3_StudentGradesManagementSystem.fsproj",
+        "projectUniqueName": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
         "projectName": "PL3_StudentGradesManagementSystem",
-        "projectPath": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\MYTry\\PL3_StudentGradesManagementSystem.fsproj",
+        "projectPath": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
         "packagesPath": "C:\\Users\\seife\\.nuget\\packages\\",
-        "outputPath": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\MYTry\\obj\\",
+        "outputPath": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\PL3_StudentGradesManagementSystem\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

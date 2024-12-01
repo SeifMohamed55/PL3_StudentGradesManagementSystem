@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\MYTry\\",
+  "WorkspaceRootPath": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\PL3_StudentGradesManagementSystem\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4915CC82-69EF-410E-9808-B53486574DD8}|PL3_StudentGradesManagementSystem.fsproj|l:\\seif\\fcai\\4- year four\\first semester\\pl3\\project\\mytry\\program.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "AbsoluteMoniker": "D:0:0:{4915CC82-69EF-410E-9808-B53486574DD8}|PL3_StudentGradesManagementSystem.fsproj|l:\\seif\\fcai\\4- year four\\first semester\\pl3\\project\\pl3_studentgradesmanagementsystem\\program.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
       "RelativeMoniker": "D:0:0:{4915CC82-69EF-410E-9808-B53486574DD8}|PL3_StudentGradesManagementSystem.fsproj|solutionrelative:program.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
     }
   ],
@@ -24,9 +24,9 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Program.fs",
-              "DocumentMoniker": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\MYTry\\Program.fs",
+              "DocumentMoniker": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\PL3_StudentGradesManagementSystem\\Program.fs",
               "RelativeDocumentMoniker": "Program.fs",
-              "ToolTip": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\MYTry\\Program.fs",
+              "ToolTip": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\PL3_StudentGradesManagementSystem\\Program.fs",
               "RelativeToolTip": "Program.fs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",

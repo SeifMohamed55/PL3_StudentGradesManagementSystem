@@ -1,5 +1,4 @@
 ﻿open System
-open System.Windows
 open System.Windows.Forms
 
 // Create the main application
