@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\MYTry\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4915CC82-69EF-410E-9808-B53486574DD8}|PL3_StudentGradesManagementSystem.fsproj|l:\\seif\\fcai\\4- year four\\first semester\\pl3\\project\\mytry\\program.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "RelativeMoniker": "D:0:0:{4915CC82-69EF-410E-9808-B53486574DD8}|PL3_StudentGradesManagementSystem.fsproj|solutionrelative:program.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.fs",
+              "DocumentMoniker": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\MYTry\\Program.fs",
+              "RelativeDocumentMoniker": "Program.fs",
+              "ToolTip": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\MYTry\\Program.fs",
+              "RelativeToolTip": "Program.fs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-12-01T12:10:50.288Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
