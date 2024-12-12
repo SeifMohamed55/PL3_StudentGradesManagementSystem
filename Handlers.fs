@@ -104,3 +104,5 @@ type MyFormHandler() =
 
     member this.ToString(var) = 
         string(var)
+
+    member this.FinalGrade = 100

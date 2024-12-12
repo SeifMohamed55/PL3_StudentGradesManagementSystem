@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\TIBA\\Documents\\GitHub\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj": {}
+    "D:\\studying\\fourth year\\first semester\\pl3\\project\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj": {}
   },
   "projects": {
-    "C:\\Users\\TIBA\\Documents\\GitHub\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj": {
+    "D:\\studying\\fourth year\\first semester\\pl3\\project\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\TIBA\\Documents\\GitHub\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
+        "projectUniqueName": "D:\\studying\\fourth year\\first semester\\pl3\\project\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
         "projectName": "PL3_StudentGradesManagementSystem",
-        "projectPath": "C:\\Users\\TIBA\\Documents\\GitHub\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
-        "packagesPath": "C:\\Users\\TIBA\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\TIBA\\Documents\\GitHub\\PL3_StudentGradesManagementSystem\\obj\\",
+        "projectPath": "D:\\studying\\fourth year\\first semester\\pl3\\project\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
+        "packagesPath": "C:\\Users\\p c\\.nuget\\packages\\",
+        "outputPath": "D:\\studying\\fourth year\\first semester\\pl3\\project\\PL3_StudentGradesManagementSystem\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\TIBA\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\p c\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -23,7 +23,7 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "C:\\Program Files\\dotnet\\sdk\\8.0.404\\FSharp\\library-packs": {},
+          "C:\\Program Files\\dotnet\\sdk\\8.0.403\\FSharp\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -45,7 +45,7 @@
             "FSharp.Core": {
               "include": "Runtime, Compile, Build, Native, Analyzers, BuildTransitive",
               "target": "Package",
-              "version": "[8.0.403, )",
+              "version": "[8.0.401, )",
               "generatePathProperty": true
             },
             "OxyPlot.WindowsForms": {
@@ -73,7 +73,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
