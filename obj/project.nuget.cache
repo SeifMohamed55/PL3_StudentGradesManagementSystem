@@ -1,10 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "W8d5IqHgb0I=",
+  "dgSpecHash": "4yvDpeXm3JHleaMLFJV3NbBhaGxQa5+PCqpVpwPVZvkaU0ONwsR+GjDEcOznPKaP6x9uWpynh2XYfeFnFTLZbg==",
   "success": true,
-  "projectFilePath": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
+  "projectFilePath": "D:\\githup\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
   "expectedPackageFiles": [
-    "C:\\Users\\seife\\.nuget\\packages\\fsharp.core\\9.0.100\\fsharp.core.9.0.100.nupkg.sha512"
+    "C:\\Users\\RTX\\.nuget\\packages\\fsharp.core\\8.0.401\\fsharp.core.8.0.401.nupkg.sha512",
+    "C:\\Users\\RTX\\.nuget\\packages\\oxyplot.core\\2.2.0\\oxyplot.core.2.2.0.nupkg.sha512",
+    "C:\\Users\\RTX\\.nuget\\packages\\oxyplot.windowsforms\\2.2.0\\oxyplot.windowsforms.2.2.0.nupkg.sha512"
   ],
   "logs": []
 }

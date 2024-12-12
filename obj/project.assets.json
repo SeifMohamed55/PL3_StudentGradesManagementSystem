@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     "net8.0-windows7.0": {
-      "FSharp.Core/9.0.100": {
+      "FSharp.Core/8.0.401": {
         "type": "package",
         "compile": {
           "lib/netstandard2.1/FSharp.Core.dll": {
@@ -55,19 +55,51 @@
             "locale": "zh-Hant"
           }
         }
+      },
+      "OxyPlot.Core/2.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/OxyPlot.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/OxyPlot.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "OxyPlot.WindowsForms/2.2.0": {
+        "type": "package",
+        "dependencies": {
+          "OxyPlot.Core": "2.2.0"
+        },
+        "compile": {
+          "lib/net8.0-windows7.0/OxyPlot.WindowsForms.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0-windows7.0/OxyPlot.WindowsForms.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.WindowsDesktop.App.WindowsForms"
+        ]
       }
     }
   },
   "libraries": {
-    "FSharp.Core/9.0.100": {
-      "sha512": "ye8yagHGsH08H2Twno5GRWkSbrMtxK/SWiHuPcF+3nODpW65/VJ8RO0aWxp8n9+KQbmahg90wAEL3TEXjF0r6A==",
+    "FSharp.Core/8.0.401": {
+      "sha512": "pvmquLrs82m8WqWB49Gj+hsmnWURkUbc++pJ0P2NdrEv1ZVVrhDNjSiFNP4wW4HiTowwaRhjiBc5IKNV35Vf/A==",
       "type": "package",
-      "path": "fsharp.core/9.0.100",
+      "path": "fsharp.core/8.0.401",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
-        "fsharp.core.9.0.100.nupkg.sha512",
+        "fsharp.core.8.0.401.nupkg.sha512",
         "fsharp.core.nuspec",
         "lib/netstandard2.0/FSharp.Core.dll",
         "lib/netstandard2.0/FSharp.Core.xml",
@@ -100,32 +132,68 @@
         "lib/netstandard2.1/zh-Hans/FSharp.Core.resources.dll",
         "lib/netstandard2.1/zh-Hant/FSharp.Core.resources.dll"
       ]
+    },
+    "OxyPlot.Core/2.2.0": {
+      "sha512": "QhXNdXR5FPpro/VoLx3BOp6AhQo7YrbfmWEZ9cgY+pnYM7RYORZjnu+aDMA8ka9A1r8hLkX//NbCPZNUv+l8qA==",
+      "type": "package",
+      "path": "oxyplot.core/2.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "OxyPlot_128.png",
+        "README.md",
+        "lib/net462/OxyPlot.dll",
+        "lib/net462/OxyPlot.xml",
+        "lib/net6.0/OxyPlot.dll",
+        "lib/net6.0/OxyPlot.xml",
+        "lib/net8.0/OxyPlot.dll",
+        "lib/net8.0/OxyPlot.xml",
+        "lib/netstandard2.0/OxyPlot.dll",
+        "lib/netstandard2.0/OxyPlot.xml",
+        "oxyplot.core.2.2.0.nupkg.sha512",
+        "oxyplot.core.nuspec"
+      ]
+    },
+    "OxyPlot.WindowsForms/2.2.0": {
+      "sha512": "jkveaQ7d3PanUP6OKaZ+IXFPuwpyabifPQiQZ40pQls8Tuedf0mUZ8JcLkMltK5Jkj/JRwGP2cNn1oJ8NwaV3A==",
+      "type": "package",
+      "path": "oxyplot.windowsforms/2.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "OxyPlot_128.png",
+        "README.md",
+        "lib/net462/OxyPlot.WindowsForms.dll",
+        "lib/net462/OxyPlot.WindowsForms.xml",
+        "lib/net6.0-windows7.0/OxyPlot.WindowsForms.dll",
+        "lib/net6.0-windows7.0/OxyPlot.WindowsForms.xml",
+        "lib/net8.0-windows7.0/OxyPlot.WindowsForms.dll",
+        "lib/net8.0-windows7.0/OxyPlot.WindowsForms.xml",
+        "oxyplot.windowsforms.2.2.0.nupkg.sha512",
+        "oxyplot.windowsforms.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
     "net8.0-windows7.0": [
-      "FSharp.Core >= 9.0.100"
+      "FSharp.Core >= 8.0.401",
+      "OxyPlot.WindowsForms >= 2.2.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\seife\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\RTX\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
+      "projectUniqueName": "D:\\githup\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
       "projectName": "PL3_StudentGradesManagementSystem",
-      "projectPath": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
-      "packagesPath": "C:\\Users\\seife\\.nuget\\packages\\",
-      "outputPath": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\PL3_StudentGradesManagementSystem\\obj\\",
+      "projectPath": "D:\\githup\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
+      "packagesPath": "C:\\Users\\RTX\\.nuget\\packages\\",
+      "outputPath": "D:\\githup\\PL3_StudentGradesManagementSystem\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\seife\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\RTX\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -133,7 +201,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\sdk\\9.0.100\\FSharp\\library-packs": {},
+        "C:\\Program Files\\dotnet\\sdk\\8.0.403\\FSharp\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -145,9 +213,8 @@
       "restoreAuditProperties": {
         "enableAudit": "true",
         "auditLevel": "low",
-        "auditMode": "all"
-      },
-      "SdkAnalysisLevel": "9.0.100"
+        "auditMode": "direct"
+      }
     },
     "frameworks": {
       "net8.0-windows7.0": {
@@ -156,7 +223,12 @@
           "FSharp.Core": {
             "include": "Runtime, Compile, Build, Native, Analyzers, BuildTransitive",
             "target": "Package",
-            "version": "[9.0.100, )",
+            "version": "[8.0.401, )",
+            "generatePathProperty": true
+          },
+          "OxyPlot.WindowsForms": {
+            "target": "Package",
+            "version": "[2.2.0, )",
             "generatePathProperty": true
           }
         },
@@ -179,7 +251,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

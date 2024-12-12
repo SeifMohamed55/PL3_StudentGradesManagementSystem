@@ -8,17 +8,17 @@
     ".NETCoreApp,Version=v8.0": {
       "PL3_StudentGradesManagementSystem/1.0.0": {
         "dependencies": {
-          "FSharp.Core": "9.0.100"
+          "FSharp.Core": "8.0.401"
         },
         "runtime": {
           "PL3_StudentGradesManagementSystem.dll": {}
         }
       },
-      "FSharp.Core/9.0.100": {
+      "FSharp.Core/8.0.401": {
         "runtime": {
           "lib/netstandard2.1/FSharp.Core.dll": {
-            "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.1.24.52202"
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.4.124.42107"
           }
         },
         "resources": {
@@ -71,12 +71,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "FSharp.Core/9.0.100": {
+    "FSharp.Core/8.0.401": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ye8yagHGsH08H2Twno5GRWkSbrMtxK/SWiHuPcF+3nODpW65/VJ8RO0aWxp8n9+KQbmahg90wAEL3TEXjF0r6A==",
-      "path": "fsharp.core/9.0.100",
-      "hashPath": "fsharp.core.9.0.100.nupkg.sha512"
+      "sha512": "sha512-pvmquLrs82m8WqWB49Gj+hsmnWURkUbc++pJ0P2NdrEv1ZVVrhDNjSiFNP4wW4HiTowwaRhjiBc5IKNV35Vf/A==",
+      "path": "fsharp.core/8.0.401",
+      "hashPath": "fsharp.core.8.0.401.nupkg.sha512"
     }
   }
 }
