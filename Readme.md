@@ -1,0 +1,1 @@
+# This is a Student grades management system which was made using functional programming paradigm in F#
