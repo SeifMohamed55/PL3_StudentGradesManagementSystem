@@ -20,51 +20,51 @@ type MyFormHandler() =
     let mutable students: Types.Student list =[
         {
             User = users.[1] ; 
-            Grades = Map.empty<Types.ClassTypes, int>
-                        .Add(Types.ClassTypes.Math, 60)
-                        .Add(Types.ClassTypes.Arabic, 85)
-                        .Add(Types.ClassTypes.English, 95)
-                        .Add(Types.ClassTypes.Science, 75);
+            Grades = Map.empty<Types.Subject, int>
+                        .Add(Types.Subject.Math, 60)
+                        .Add(Types.Subject.Arabic, 85)
+                        .Add(Types.Subject.English, 95)
+                        .Add(Types.Subject.Science, 75);
             ClassId = 1
 
         }
         {
             User = users.[2] ; 
-            Grades = Map.empty<Types.ClassTypes, int>
-                        .Add(Types.ClassTypes.Math, 40)
-                        .Add(Types.ClassTypes.Arabic, 70)
-                        .Add(Types.ClassTypes.English, 88)
-                        .Add(Types.ClassTypes.Science, 65);
+            Grades = Map.empty<Types.Subject, int>
+                        .Add(Types.Subject.Math, 40)
+                        .Add(Types.Subject.Arabic, 70)
+                        .Add(Types.Subject.English, 88)
+                        .Add(Types.Subject.Science, 65);
 
             ClassId = 1
         }
         {
             User = users.[3] ; 
-            Grades =Map.empty<Types.ClassTypes, int>
-                        .Add(Types.ClassTypes.Math, 50)
-                        .Add(Types.ClassTypes.Arabic, 78)
-                        .Add(Types.ClassTypes.English, 92)
-                        .Add(Types.ClassTypes.Science, 68);
+            Grades =Map.empty<Types.Subject, int>
+                        .Add(Types.Subject.Math, 50)
+                        .Add(Types.Subject.Arabic, 78)
+                        .Add(Types.Subject.English, 92)
+                        .Add(Types.Subject.Science, 68);
             ClassId = 1
 
         }
         {
             User = users.[4] ; 
-            Grades = Map.empty<Types.ClassTypes, int>
-                        .Add(Types.ClassTypes.Math, 72)
-                        .Add(Types.ClassTypes.Arabic, 82)
-                        .Add(Types.ClassTypes.English, 89)
-                        .Add(Types.ClassTypes.Science, 74);
+            Grades = Map.empty<Types.Subject, int>
+                        .Add(Types.Subject.Math, 72)
+                        .Add(Types.Subject.Arabic, 82)
+                        .Add(Types.Subject.English, 89)
+                        .Add(Types.Subject.Science, 74);
 
             ClassId = 2
         }
         {
             User = users.[5] ; 
-            Grades = Map.empty<Types.ClassTypes, int>
-                        .Add(Types.ClassTypes.Math, 60)
-                        .Add(Types.ClassTypes.Arabic, 50)
-                        .Add(Types.ClassTypes.English, 68)
-                        .Add(Types.ClassTypes.Science, 89)
+            Grades = Map.empty<Types.Subject, int>
+                        .Add(Types.Subject.Math, 60)
+                        .Add(Types.Subject.Arabic, 50)
+                        .Add(Types.Subject.English, 68)
+                        .Add(Types.Subject.Science, 89)
             ClassId = 2
         }
     ] 
@@ -82,3 +82,25 @@ type MyFormHandler() =
                 | Some user when user.Password = password -> Some user
                 | _ -> None
 
+    member this.GetStudent(id:int) = 
+        match List.tryFind (fun x -> x.User.ID = id) students with
+                | Some user -> Some user
+                | _ -> None
+
+    member this.CalcStudentAvg(student: Student) = 
+        let average =
+            student.Grades
+            |> Map.toSeq           
+            |> Seq.map snd
+            |> Seq.averageBy float
+        average
+
+    member this.GetSubjectName(subject: Subject) =
+        match subject with
+        | Math -> "Math"
+        | Science -> "Science"
+        | English -> "English"
+        | Arabic -> "Arabic"
+
+    member this.ToString(var) = 
+        string(var)

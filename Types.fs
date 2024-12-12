@@ -14,8 +14,8 @@ type User = {
 }
 
 
-type ClassTypes = 
-        | Math
+type Subject = 
+        | Math 
         | Science
         | English
         | Arabic       
@@ -25,6 +25,6 @@ type ClassTypes =
 type Student = {
     User: User
     ClassId: int
-    Grades: Map<ClassTypes, int>
+    Grades: Map<Subject, int>
 }
 
