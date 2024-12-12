@@ -2,19 +2,11 @@
 open System.Windows.Forms
 
 // Create the main application
-let createForm() =
-    let form = new Form()
-    form.Text <- "My First F# WinForms App"
-    form.ClientSize <- System.Drawing.Size(300, 200)
 
-    let label = new Label()
-    label.Text <- "Hello from F#"
-    label.Location <- System.Drawing.Point(100, 80)
-    form.Controls.Add(label)
-    form
+let handler = Handlers.MyFormHandler()
 
 let main() =
-    let form = createForm()
+    let form = new UI.LoginForm(handler)
     try
         Application.Run(form)
     with
