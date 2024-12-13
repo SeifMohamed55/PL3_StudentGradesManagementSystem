@@ -142,3 +142,5 @@ type MyFormHandler() =
         let studentsPassMap = this.GetStudentsPassMap(studentsInClass)
         this.CreateSubjectStats(studentsPassMap, studentsInClass.Length)
             
+    member this.IsClassAvailable (classId: int) = 
+        List.contains classId availableClasses

@@ -152,6 +152,46 @@ type SampleForm(title: string) =
         base.Controls.Add(label)
 
 
+type SmallForm(handler: MyFormHandler) as this =
+    inherit Form() 
+    
+    do
+        // Set the form properties
+        base.Text <- "Enter Class ID"
+        base.Size <- Size(300, 300)
+        base.StartPosition <- FormStartPosition.CenterParent
+
+        // Create the label
+        let label = new Label(Text = "Enter the Class ID:", AutoSize = true)
+        label.Location <- Point((base.ClientSize.Width - label.Width) / 2, 50)
+        base.Controls.Add(label)
+
+        // Create the text box
+        let textBox = new TextBox()
+        textBox.Width <- 200
+        textBox.Location <- Point((base.ClientSize.Width - textBox.Width) / 2, label.Bottom + 10)
+        base.Controls.Add(textBox)
+
+        // Create the button
+        let button = new Button(Text = "Submit", Width = 100)
+        button.Location <- Point((base.ClientSize.Width - button.Width) / 2, textBox.Bottom + 20)
+        button.Click.Add(fun _ ->
+            try
+                let classId = int(textBox.Text)
+                if not(handler.IsClassAvailable classId) then (failwith "Class Not Found") else ignore()
+                let form = new StatisticsForm(handler, classId)
+
+                this.Close()
+                form.ShowDialog() |> ignore 
+            
+            with
+                | (ex:exn) ->  MessageBox.Show($"Invalid Class Number") |> ignore
+            
+        )
+        base.AcceptButton <- button
+        base.Controls.Add(button)
+
+
 
 type AdminForm(handler: MyFormHandler, user: User) = 
      inherit Form(Text = "Adminstration", Width = 500, Height = 400
@@ -162,7 +202,7 @@ type AdminForm(handler: MyFormHandler, user: User) =
      let buttonWidth = 150
      let leftMargin, rightMargin = 30, 300
      let verticalSpacing = 20
-     let buttonTitles = [ "Add User"; "Edit User"; "Remove User"; "View Statistics"; ]
+     let buttonTitles = [ "Add Student"; "Add Admin"; "Edit User"; "Remove User"; "View Statistics"; ]
 
 
 
@@ -179,11 +219,25 @@ type AdminForm(handler: MyFormHandler, user: User) =
             button.Left <- if isLeft then leftMargin else rightMargin
             button.Top <- usernameLabel.Top + 80 + (i / 2) * (button.Height + verticalSpacing)
 
-            // Add click event to each button
-            button.Click.Add(fun _ ->
-                let form = new SampleForm(title)
-                form.ShowDialog() |> ignore
-            )
+            let btnCases = match i with 
+                            | 0 -> button.Click.Add(fun _ ->
+                                                        let form = new SampleForm(title)
+                                                        form.ShowDialog() |> ignore
+                                                   )
+                            | 1 ->button.Click.Add(fun _ ->
+                                                        let form = new SampleForm(title)
+                                                        form.ShowDialog() |> ignore
+                                                  )
+                            | 2 -> button.Click.Add(fun _ ->
+                                                            let form = new SampleForm(title)
+                                                            form.ShowDialog() |> ignore
+                                                   )
+                            | 3 ->button.Click.Add(fun _ ->
+                                                        let form = new SmallForm(handler)
+                                                        form.ShowDialog() |> ignore
+                                                  )
+                            | _ -> ignore()
+
 
             // Add button to the main form
             btnList <- (button :> Control) :: btnList 
