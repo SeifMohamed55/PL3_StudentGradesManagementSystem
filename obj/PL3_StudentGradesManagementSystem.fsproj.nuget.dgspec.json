@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\studying\\fourth year\\first semester\\pl3\\project\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj": {}
+    "D:\\githup\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj": {}
   },
   "projects": {
-    "D:\\studying\\fourth year\\first semester\\pl3\\project\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj": {
+    "D:\\githup\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\studying\\fourth year\\first semester\\pl3\\project\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
+        "projectUniqueName": "D:\\githup\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
         "projectName": "PL3_StudentGradesManagementSystem",
-        "projectPath": "D:\\studying\\fourth year\\first semester\\pl3\\project\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
-        "packagesPath": "C:\\Users\\p c\\.nuget\\packages\\",
-        "outputPath": "D:\\studying\\fourth year\\first semester\\pl3\\project\\PL3_StudentGradesManagementSystem\\obj\\",
+        "projectPath": "D:\\githup\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
+        "packagesPath": "C:\\Users\\RTX\\.nuget\\packages\\",
+        "outputPath": "D:\\githup\\PL3_StudentGradesManagementSystem\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\p c\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\RTX\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "C:\\Program Files\\dotnet\\sdk\\8.0.403\\FSharp\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },

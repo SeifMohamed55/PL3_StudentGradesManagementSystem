@@ -151,3 +151,5 @@ D:\studying\fourth year\first semester\pl3\project\PL3_StudentGradesManagementSy
 D:\studying\fourth year\first semester\pl3\project\PL3_StudentGradesManagementSystem\obj\Debug\net8.0-windows\PL3_Stud.69508FEB.Up2Date
 D:\studying\fourth year\first semester\pl3\project\PL3_StudentGradesManagementSystem\obj\Debug\net8.0-windows\PL3_StudentGradesManagementSystem.genruntimeconfig.cache
 D:\studying\fourth year\first semester\pl3\project\PL3_StudentGradesManagementSystem\obj\Debug\net8.0-windows\ref\PL3_StudentGradesManagementSystem.dll
+D:\githup\PL3_StudentGradesManagementSystem\bin\Debug\net8.0-windows\OxyPlot.dll
+D:\githup\PL3_StudentGradesManagementSystem\bin\Debug\net8.0-windows\OxyPlot.WindowsForms.dll

@@ -4,11 +4,51 @@ open System.Windows.Forms
 open System.Drawing
 open Handlers
 open Types
+open OxyPlot
+open OxyPlot.WindowsForms
 
 
 
-type StatisticsForm(handler: MyFormHandler, id: int) = 
-    inherit Form(Text = "Class " + string id + " Statistics", Width = 500, Height = 400)
+type StatisticsForm(handler: MyFormHandler, classId: int) = 
+    inherit Form(Text = "Class " + string classId + " Statistics", Width = 500, Height = 400)
+    
+    let data = [
+                { ClassId = 1; PassCount = 30; FailCount = 5 ; SubjectName = Arabic }
+                { ClassId = 1; PassCount = 25; FailCount = 10; SubjectName = Math }
+                { ClassId = 1; PassCount = 35; FailCount = 2 ; SubjectName = English }
+                { ClassId = 1; PassCount = 35; FailCount = 2 ; SubjectName = Science }
+              ]
+    let model = new PlotModel(Title = "Pass/Fail Statistics per Class")
+
+    // Create series for Pass and Fail counts
+    let passSeries = new OxyPlot.Series.BarSeries(Title = "Pass", StrokeColor = OxyColors.Black, StrokeThickness = 1.0)
+    let failSeries = new OxyPlot.Series.BarSeries(Title = "Fail", StrokeColor = OxyColors.Black, StrokeThickness = 1.0)
+
+    do
+        // Add data to the series
+        data |> List.iter (fun stat ->
+            passSeries.Items.Add(OxyPlot.Series.BarItem(stat.PassCount))
+            failSeries.Items.Add(OxyPlot.Series.BarItem(stat.FailCount))
+        )
+
+        // Set the categories on the X-axis
+        model.Axes.Add(new OxyPlot.Axes.CategoryAxis(
+                                Position = OxyPlot.Axes.AxisPosition.Bottom,
+                                Key = "Class",
+                                ItemsSource = (data |> List.map (fun s -> s.SubjectName))))
+
+        // Add the series to the model
+        model.Series.Add(passSeries)
+        model.Series.Add(failSeries)
+
+      
+        let plotView = new PlotView(Model = model)
+        plotView.Dock <- DockStyle.Top
+
+        // Add the plot view to the form
+        base.Controls.Add(plotView)
+
+        
 
 
 
