@@ -8,18 +8,18 @@
     ".NETCoreApp,Version=v8.0": {
       "PL3_StudentGradesManagementSystem/1.0.0": {
         "dependencies": {
-          "FSharp.Core": "8.0.200",
+          "FSharp.Core": "8.0.401",
           "OxyPlot.WindowsForms": "2.2.0"
         },
         "runtime": {
           "PL3_StudentGradesManagementSystem.dll": {}
         }
       },
-      "FSharp.Core/8.0.200": {
+      "FSharp.Core/8.0.401": {
         "runtime": {
           "lib/netstandard2.1/FSharp.Core.dll": {
             "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.2.24.10803"
+            "fileVersion": "8.4.124.42107"
           }
         },
         "resources": {
@@ -91,12 +91,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "FSharp.Core/8.0.200": {
+    "FSharp.Core/8.0.401": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-U016Y0NhtIEQvbmxf6Sff9lx7PTSGEFctA/kLrJr9MvNfKwjrzlK/4C2V1StgsapegWeGYW6K8Zd/D6vc9C4Yw==",
-      "path": "fsharp.core/8.0.200",
-      "hashPath": "fsharp.core.8.0.200.nupkg.sha512"
+      "sha512": "sha512-pvmquLrs82m8WqWB49Gj+hsmnWURkUbc++pJ0P2NdrEv1ZVVrhDNjSiFNP4wW4HiTowwaRhjiBc5IKNV35Vf/A==",
+      "path": "fsharp.core/8.0.401",
+      "hashPath": "fsharp.core.8.0.401.nupkg.sha512"
     },
     "OxyPlot.Core/2.2.0": {
       "type": "package",

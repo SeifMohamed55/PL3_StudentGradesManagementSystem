@@ -6,7 +6,7 @@ open Types
 type MyFormHandler() = 
 
     let mutable users: Types.User list = [
-        {  ID = 1; Username = "abdo123" ; Password = "123";  Role = Types.UserRole.Admin}
+        {  ID = 1; Username = "sherif" ; Password = "123";  Role = Types.UserRole.Admin}
         {  ID = 2; Username = "aly123" ;  Password = "123" ; Role = Types.UserRole.Student}
         {  ID = 3; Username = "Seif430" ; Password = "123" ; Role = Types.UserRole.Student}
         {  ID = 4; Username = "Saif437" ; Password = "123" ; Role = Types.UserRole.Student}
@@ -72,7 +72,12 @@ type MyFormHandler() =
 
     let availableClasses = [1; 2; 3]
 
+
     member this.FinalGrade = 100
+
+    member this.IsClassAvailable (classId: int) = 
+        List.contains classId availableClasses
+
 
     member this.isAdmin (user: User) =
         match user.Role with
@@ -141,6 +146,24 @@ type MyFormHandler() =
         let studentsInClass = this.GetStudentsInClass(classId)
         let studentsPassMap = this.GetStudentsPassMap(studentsInClass)
         this.CreateSubjectStats(studentsPassMap, studentsInClass.Length)
+
+    member this.GetSummaryInClass (classId:int) = 
+            let students = this.GetStudentsInClass classId
+            let mutable gradesSeq = Seq.empty<(Subject*int)>
+            let mutable max_low_sub = Map.empty<Subject,(int*int)> 
+            students |>
+            List.iter<Student> (fun student -> 
+               let studentGrades = (Map.toSeq student.Grades)  
+               gradesSeq <- Seq.append gradesSeq studentGrades 
+            )
+            let subjectStats = 
+                gradesSeq
+                |> Seq.groupBy fst  // Group by Subject
+                |> Seq.map (fun (subject, values) -> 
+                    let grades = values |> Seq.map snd |> Seq.toList // Get all the grades for the subject
+                    let maxGrade = grades |> List.max // Get max grade for this subject
+                    let minGrade = grades |> List.min // Get min grade for this subject
+                    let avg = grades |> List.map (fun x -> float x) |> List.average 
+                    (subject, maxGrade, minGrade, avg)) // Return a tuple with Subject, Max, and Min grades
+            subjectStats
             
-    member this.IsClassAvailable (classId: int) = 
-        List.contains classId availableClasses

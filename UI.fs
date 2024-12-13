@@ -10,7 +10,7 @@ open OxyPlot.WindowsForms
 
 
 type StatisticsForm(handler: MyFormHandler, classId: int) = 
-    inherit Form(Text = "Class " + string classId + " Statistics", Width = 500, Height = 400)
+    inherit Form(Text = "Class " + string classId + " Statistics", Width = 600, Height = 500)
     
     let data = handler.GetClassStats(classId)
     let model = new PlotModel(Title = "Pass/Fail Statistics For Class " + string classId)
@@ -19,14 +19,34 @@ type StatisticsForm(handler: MyFormHandler, classId: int) =
     let passSeries = new OxyPlot.Series.BarSeries(Title = "Pass", StrokeColor = OxyColors.Black, StrokeThickness = 1.0)
     let failSeries = new OxyPlot.Series.BarSeries(Title = "Fail", StrokeColor = OxyColors.Black, StrokeThickness = 1.0)
 
+    // Calculate highest and lowest grade
+    let highestGrade = data |> List.maxBy (fun stat -> stat.PassCount)
+    let lowestGrade = data |> List.minBy (fun stat -> stat.PassCount)
+
     do
         // Add data to the series
-        data |> List.iter (fun stat ->
+        data |> List.iter (fun stat -> 
             passSeries.Items.Add(OxyPlot.Series.BarItem(stat.PassCount))
             failSeries.Items.Add(OxyPlot.Series.BarItem(stat.FailCount))
         )
 
-        // Set the categories on the X-axis
+        // Add label for highest grade
+        let highestGradeLabel = new Label(Text = "Highest Grade: " + string highestGrade.PassCount, Width = 150, Height = 30)
+        highestGradeLabel.Top <- 10
+        highestGradeLabel.Left <- 10
+        highestGradeLabel.Font <- new Font(highestGradeLabel.Font.FontFamily, 10.0f, FontStyle.Bold)
+
+        base.Controls.Add(highestGradeLabel)
+
+        // Add label for lowest grade
+        let lowestGradeLabel = new Label(Text = "Lowest Grade: " + string lowestGrade.PassCount, Width = 150, Height = 30)
+        lowestGradeLabel.Top <- 10
+        lowestGradeLabel.Left <- base.ClientSize.Width - 122  // Positioned at the right
+        lowestGradeLabel.Font <- new Font(lowestGradeLabel.Font.FontFamily, 10.0f, FontStyle.Bold)
+
+        base.Controls.Add(lowestGradeLabel)
+
+                // Set the categories on the X-axis
         model.Axes.Add(new OxyPlot.Axes.CategoryAxis(
                                 Position = OxyPlot.Axes.AxisPosition.Left,
                                 Key = "Class",
@@ -36,14 +56,64 @@ type StatisticsForm(handler: MyFormHandler, classId: int) =
         model.Series.Add(passSeries)
         model.Series.Add(failSeries)
 
-      
+        // Create PlotView and add it to the form
         let plotView = new PlotView(Model = model)
+        plotView.Top <- highestGradeLabel.Top + 50
         plotView.Dock <- DockStyle.Fill
-
-        // Add the plot view to the form
         base.Controls.Add(plotView)
-
         
+
+
+type SummaryForm(handler: MyFormHandler, classId:int) as this = 
+    inherit Form(Text = "Class " + string classId + " Summary", Width = 500, Height = 450) 
+
+    let lowHighGrades = handler.GetSummaryInClass classId
+
+    let header = new Label(Text = "Class " + string classId + " Summary:", Width = 500, Height = 30)
+
+    do
+
+        header.Font <- new Font(header.Font.FontFamily, 15.0f, FontStyle.Bold ||| FontStyle.Italic)
+        header.Top <- 20
+        header.Top <- 20
+        header.TextAlign <- ContentAlignment.TopCenter
+        this.Controls.Add(header)
+
+        lowHighGrades |> Seq.iteri(fun i (subject, max, min, avg) -> 
+            let headerLabelSubject = new Label(Text = string subject + ":" , Width=600, Height=30)
+            headerLabelSubject.Font <- new Font(headerLabelSubject.Font.FontFamily, 12.0f, FontStyle.Bold)
+            headerLabelSubject.Top <- header.Top + (i*80) + headerLabelSubject.Height
+            headerLabelSubject.Left <- 20
+
+            let maxGrade = new Label(Text = "Maximum Grade: " + string max + "/100", Width=100, Height=30)
+            maxGrade.Font <- new Font(maxGrade.Font.FontFamily, 9.0f, FontStyle.Underline)
+            maxGrade.Left <- 20
+            maxGrade.Top <-  headerLabelSubject.Top + headerLabelSubject.Height
+
+
+            let minGrade = new Label(Text = "Minimum Grade: " + string min + "/100", Width=100, Height=30)
+            minGrade.Font <- new Font(minGrade.Font.FontFamily, 9.0f, FontStyle.Underline)
+            minGrade.Left <- maxGrade.Left + maxGrade.Width + 50
+            minGrade.Top <-  headerLabelSubject.Top + headerLabelSubject.Height
+
+            let avgGrade = new Label(Text = "Grades Average: " + avg.ToString("F2") + "%", Width=100, Height=30)
+            avgGrade.Font <- new Font(avgGrade.Font.FontFamily, 9.0f, FontStyle.Underline)
+            avgGrade.Left <- minGrade.Left + minGrade.Width + 50
+            avgGrade.Top <-  headerLabelSubject.Top + headerLabelSubject.Height
+
+            this.Controls.Add(headerLabelSubject)
+            this.Controls.Add(maxGrade)
+            this.Controls.Add(minGrade)
+            this.Controls.Add(avgGrade)
+        )
+
+
+
+
+
+
+
+
 
 
 
@@ -67,6 +137,8 @@ type StudentForm(handler: MyFormHandler, user: User) =
     let grades = Map.toList student.Value.Grades
 
     let button = new Button(Text = "Class Statistics", Width = 100, Height = 30)
+
+    let button2 = new Button(Text = "Class Summary", Width = 100, Height = 30)
 
 
 
@@ -126,8 +198,8 @@ type StudentForm(handler: MyFormHandler, user: User) =
 
 
 
-        button.Left <- (base.ClientSize.Width - button.Width) / 2
-        button.Top <- grade4.Height  + grade4.Top
+        button.Left <- ((base.ClientSize.Width - button.Width) / 2) - 90
+        button.Top <- grade4.Height  + grade4.Top + 30
 
         // Add click event handler
         button.Click.Add(fun _ ->
@@ -137,6 +209,16 @@ type StudentForm(handler: MyFormHandler, user: User) =
         )
 
         base.Controls.Add(button)
+
+        button2.Left <- ((base.ClientSize.Width - button.Width) / 2) + button.Width
+        button2.Top <- button.Top
+        button2.Click.Add(fun _ ->
+            // Create and show the second form
+            let secondForm = new SummaryForm(handler, student.Value.ClassId)
+            secondForm.ShowDialog() |> ignore
+        )
+
+        base.Controls.Add(button2)
 
 
 
@@ -202,7 +284,7 @@ type AdminForm(handler: MyFormHandler, user: User) =
      let buttonWidth = 150
      let leftMargin, rightMargin = 30, 300
      let verticalSpacing = 20
-     let buttonTitles = [ "Add Student"; "Add Admin"; "Edit User"; "Remove User"; "View Statistics"; ]
+     let buttonTitles = [ "Add Student"; "Add Admin"; "Edit User"; "View Statistics"; "Remove User";  ]
 
 
 
@@ -236,6 +318,11 @@ type AdminForm(handler: MyFormHandler, user: User) =
                                                         let form = new SmallForm(handler)
                                                         form.ShowDialog() |> ignore
                                                   )
+                            | 4 -> button.Click.Add(fun _ ->
+                                                        let form = new SampleForm(title)
+                                                        form.ShowDialog() |> ignore
+                                                  )
+
                             | _ -> ignore()
 
 
