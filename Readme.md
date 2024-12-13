@@ -24,14 +24,14 @@ The project is divided into several tasks. Below is the progress status:
 - **Task 7:** Create Admin Form
 - **Task 8:** Update Admin Form
 - **Task 9:** Add Summary Form
+- **Task 10:** Re-Update Statistics Form
 
 ### Tasks In Progress
-- **Task 10:** Re-Update Statistics Form
 - **Task 11:** Add Admin Form
-
-### Upcoming Tasks
 - **Task 12:** Add Student Form
 - **Task 13:** Add View Student Form
+  
+### Upcoming Tasks
 - **Task 14:** Update Add Student Form to Include Edit Functionality
 - **Task 15:** Delete/Edit Admin Form
 - **Task 16:** Apply Final Touches
