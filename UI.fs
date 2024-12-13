@@ -6,11 +6,12 @@ open System.Windows.Forms
 open System.Drawing
 open OxyPlot
 open OxyPlot.WindowsForms
+open System
 
 
-
-type StatisticsForm(handler: MyFormHandler, classId: int) = 
-    inherit Form(Text = "Class " + string classId + " Statistics", Width = 600, Height = 500)
+type StatisticsForm(handler: MyFormHandler, classId: int) as this  = 
+    inherit Form(Text = "Class " + string classId + " Statistics", Width = 600, Height = 500
+                    , StartPosition=FormStartPosition.WindowsDefaultLocation)
     
     let data = handler.GetClassStats(classId)
     let model = new PlotModel(Title = "Pass/Fail Statistics For Class " + string classId)
@@ -19,34 +20,18 @@ type StatisticsForm(handler: MyFormHandler, classId: int) =
     let passSeries = new OxyPlot.Series.BarSeries(Title = "Pass", StrokeColor = OxyColors.Black, StrokeThickness = 1.0)
     let failSeries = new OxyPlot.Series.BarSeries(Title = "Fail", StrokeColor = OxyColors.Black, StrokeThickness = 1.0)
 
-    // Calculate highest and lowest grade
-    let highestGrade = data |> List.maxBy (fun stat -> stat.PassCount)
-    let lowestGrade = data |> List.minBy (fun stat -> stat.PassCount)
+    do    
+    // Set the location to the left of the parent form
+       
 
-    do
         // Add data to the series
         data |> List.iter (fun stat -> 
             passSeries.Items.Add(OxyPlot.Series.BarItem(stat.PassCount))
             failSeries.Items.Add(OxyPlot.Series.BarItem(stat.FailCount))
         )
 
-        // Add label for highest grade
-        let highestGradeLabel = new Label(Text = "Highest Grade: " + string highestGrade.PassCount, Width = 150, Height = 30)
-        highestGradeLabel.Top <- 10
-        highestGradeLabel.Left <- 10
-        highestGradeLabel.Font <- new Font(highestGradeLabel.Font.FontFamily, 10.0f, FontStyle.Bold)
 
-        base.Controls.Add(highestGradeLabel)
-
-        // Add label for lowest grade
-        let lowestGradeLabel = new Label(Text = "Lowest Grade: " + string lowestGrade.PassCount, Width = 150, Height = 30)
-        lowestGradeLabel.Top <- 10
-        lowestGradeLabel.Left <- base.ClientSize.Width - 122  // Positioned at the right
-        lowestGradeLabel.Font <- new Font(lowestGradeLabel.Font.FontFamily, 10.0f, FontStyle.Bold)
-
-        base.Controls.Add(lowestGradeLabel)
-
-                // Set the categories on the X-axis
+        // Set the categories on the X-axis
         model.Axes.Add(new OxyPlot.Axes.CategoryAxis(
                                 Position = OxyPlot.Axes.AxisPosition.Left,
                                 Key = "Class",
@@ -58,14 +43,20 @@ type StatisticsForm(handler: MyFormHandler, classId: int) =
 
         // Create PlotView and add it to the form
         let plotView = new PlotView(Model = model)
-        plotView.Top <- highestGradeLabel.Top + 50
         plotView.Dock <- DockStyle.Fill
         base.Controls.Add(plotView)
+
+        this.KeyPreview <- true // work if focus on a txt field for examples
+        this.KeyDown.Add(fun args ->
+            if args.KeyCode = Keys.Escape then
+                this.Close() // Close the form
+        )
         
 
 
 type SummaryForm(handler: MyFormHandler, classId:int) as this = 
-    inherit Form(Text = "Class " + string classId + " Summary", Width = 500, Height = 450) 
+    inherit Form(Text = "Class " + string classId + " Summary", Width = 500, Height = 450
+                    , StartPosition=FormStartPosition.WindowsDefaultLocation) 
 
     let lowHighGrades = handler.GetSummaryInClass classId
 
@@ -75,11 +66,19 @@ type SummaryForm(handler: MyFormHandler, classId:int) as this =
 
         header.Font <- new Font(header.Font.FontFamily, 15.0f, FontStyle.Bold ||| FontStyle.Italic)
         header.Top <- 20
-        header.Top <- 20
         header.TextAlign <- ContentAlignment.TopCenter
         this.Controls.Add(header)
 
-        lowHighGrades |> Seq.iteri(fun i (subject, max, min, avg) -> 
+        if (Seq.length lowHighGrades) = 0 then 
+            let empty = new Label(Text = "EMPTY!" , Width=600, Height=200)
+            empty.Font <- new Font(empty.Font.FontFamily, 30.0f, FontStyle.Bold)
+            empty.Top <- (this.ClientSize.Height/2) - 40
+            empty.Left <- (this.ClientSize.Width/2) - 70
+            this.Controls.Add(empty)
+        else ignore()
+
+        lowHighGrades |> 
+        Seq.iteri(fun i (subject, max, min, avg) -> 
             let headerLabelSubject = new Label(Text = string subject + ":" , Width=600, Height=30)
             headerLabelSubject.Font <- new Font(headerLabelSubject.Font.FontFamily, 12.0f, FontStyle.Bold)
             headerLabelSubject.Top <- header.Top + (i*80) + headerLabelSubject.Height
@@ -105,6 +104,12 @@ type SummaryForm(handler: MyFormHandler, classId:int) as this =
             this.Controls.Add(maxGrade)
             this.Controls.Add(minGrade)
             this.Controls.Add(avgGrade)
+        )
+
+        this.KeyPreview <- true // work if focus on a txt field for examples
+        this.KeyDown.Add(fun args ->
+            if args.KeyCode = Keys.Escape then
+                this.Close() // Close the form
         )
 
 
@@ -234,15 +239,14 @@ type SampleForm(title: string) =
         base.Controls.Add(label)
 
 
-type SmallForm(handler: MyFormHandler) as this =
-    inherit Form() 
+type ClassNumberQuestionForm(handler: MyFormHandler, formType: System.Type) as this =
+    inherit Form(StartPosition=FormStartPosition.WindowsDefaultLocation) 
     
     do
         // Set the form properties
         base.Text <- "Enter Class ID"
         base.Size <- Size(300, 300)
-        base.StartPosition <- FormStartPosition.CenterParent
-
+        
         // Create the label
         let label = new Label(Text = "Enter the Class ID:", AutoSize = true)
         label.Location <- Point((base.ClientSize.Width - label.Width) / 2, 50)
@@ -261,10 +265,13 @@ type SmallForm(handler: MyFormHandler) as this =
             try
                 let classId = int(textBox.Text)
                 if not(handler.IsClassAvailable classId) then (failwith "Class Not Found") else ignore()
-                let form = new StatisticsForm(handler, classId)
+                let objArr:Object array = [|handler ; classId;|]
+                let form = Activator.CreateInstance(formType ,objArr)
+
+                let method = formType.GetMethod("ShowDialog", Type.EmptyTypes);                
 
                 this.Close()
-                form.ShowDialog() |> ignore 
+                method.Invoke(form, null) |> ignore 
             
             with
                 | (ex:exn) ->  MessageBox.Show($"Invalid Class Number") |> ignore
@@ -284,7 +291,7 @@ type AdminForm(handler: MyFormHandler, user: User) =
      let buttonWidth = 150
      let leftMargin, rightMargin = 30, 300
      let verticalSpacing = 20
-     let buttonTitles = [ "Add Student"; "Add Admin"; "Edit User"; "View Statistics"; "Remove User";  ]
+     let buttonTitles = [ "Add Student"; "Add Admin"; "Edit User"; "View Statistics"; "Remove User";  "View Summary"]
 
 
 
@@ -301,25 +308,29 @@ type AdminForm(handler: MyFormHandler, user: User) =
             button.Left <- if isLeft then leftMargin else rightMargin
             button.Top <- usernameLabel.Top + 80 + (i / 2) * (button.Height + verticalSpacing)
 
-            let btnCases = match i with 
-                            | 0 -> button.Click.Add(fun _ ->
+            let btnCases = match title with 
+                            | "Add Student" -> button.Click.Add(fun _ ->
                                                         let form = new SampleForm(title)
                                                         form.ShowDialog() |> ignore
                                                    )
-                            | 1 ->button.Click.Add(fun _ ->
+                            | "Add Admin" ->button.Click.Add(fun _ ->
                                                         let form = new SampleForm(title)
                                                         form.ShowDialog() |> ignore
                                                   )
-                            | 2 -> button.Click.Add(fun _ ->
+                            | "Edit User" -> button.Click.Add(fun _ ->
                                                             let form = new SampleForm(title)
                                                             form.ShowDialog() |> ignore
                                                    )
-                            | 3 ->button.Click.Add(fun _ ->
-                                                        let form = new SmallForm(handler)
+                            | "View Statistics" ->button.Click.Add(fun _ ->
+                                                        let form = new ClassNumberQuestionForm(handler, typeof<StatisticsForm>)
                                                         form.ShowDialog() |> ignore
                                                   )
-                            | 4 -> button.Click.Add(fun _ ->
+                            | "Remove User" -> button.Click.Add(fun _ ->
                                                         let form = new SampleForm(title)
+                                                        form.ShowDialog() |> ignore
+                                                  )
+                            | "View Summary" -> button.Click.Add(fun _ ->
+                                                        let form = new ClassNumberQuestionForm(handler, typeof<SummaryForm>)
                                                         form.ShowDialog() |> ignore
                                                   )
 
@@ -379,7 +390,7 @@ type LoginForm(handler: MyFormHandler) as this =
             let password = passwordTextBox.Text
             match handler.Login(username, password) with
                         | Some user -> match user.Role with
-                                            | Admin ->  let form = new AdminForm(this.FormHandlers, user)
+                                            | Admin ->  let form = new AdminForm(handler, user)
                                                         try
                                                             this.Hide() 
                                                             form.ShowDialog() |> ignore 
@@ -388,7 +399,7 @@ type LoginForm(handler: MyFormHandler) as this =
                                                             | :? System.InvalidOperationException -> printfn "Invalid Operation"
                                                             | (ex:exn) -> printfn "exception occured:s %s" ex.Message
                                                        
-                                            | Student-> let form = new StudentForm(this.FormHandlers, user)
+                                            | Student-> let form = new StudentForm(handler, user)
                                                         try
                                                             this.Hide() 
                                                             form.ShowDialog() |> ignore 
@@ -402,9 +413,3 @@ type LoginForm(handler: MyFormHandler) as this =
         )
 
         base.AcceptButton <- loginButton
-
-    // Public methods to access the input values
-    member this.Username = usernameTextBox.Text
-    member this.Password = passwordTextBox.Text
-    member this.FormHandlers = handler
-
