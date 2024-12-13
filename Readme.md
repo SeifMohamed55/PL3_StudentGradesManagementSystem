@@ -22,9 +22,9 @@ The project is divided into several tasks. Below is the progress status:
 - **Task 5:** Add Statistics Form
 - **Task 6:** Update Statistics Form
 - **Task 7:** Create Admin Form
+- **Task 8:** Update Admin Form
 
 ### Tasks In Progress
-- **Task 8:** Update Admin Form
 - **Task 9:** Add Summary Form
 - **Task 10:** Re-Update Statistics Form
 - **Task 11:** Add Admin Form
