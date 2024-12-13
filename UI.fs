@@ -125,9 +125,7 @@ type StudentForm(handler: MyFormHandler, user: User) =
 
 
 
-        // Create a button
 
-        // Center the button
         button.Left <- (base.ClientSize.Width - button.Width) / 2
         button.Top <- grade4.Height  + grade4.Top
 
@@ -143,7 +141,15 @@ type StudentForm(handler: MyFormHandler, user: User) =
 
 
 
+type SampleForm(title: string) =
+    inherit Form()
 
+    do
+        base.Text <- title
+        base.Size <- new Size(300, 200)
+        base.StartPosition <- FormStartPosition.CenterScreen
+        let label = new Label(Text = $"Welcome to {title}", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter)
+        base.Controls.Add(label)
 
 
 
@@ -152,14 +158,37 @@ type AdminForm(handler: MyFormHandler, user: User) =
                             , StartPosition=FormStartPosition.CenterScreen)
 
      let usernameLabel = new Label(Text = "Welcome Admin "  + user.Username + "!", Top = 20, Width=500, Height=30)
+     
+     let buttonWidth = 150
+     let leftMargin, rightMargin = 30, 300
+     let verticalSpacing = 20
+     let buttonTitles = [ "Add User"; "Edit User"; "Remove User"; "View Statistics"; ]
+
+
 
      do
         usernameLabel.Font <- new Font(usernameLabel.Font.FontFamily, 14.0f, FontStyle.Bold)
         usernameLabel.TextAlign <- ContentAlignment.TopCenter
-        //usernameLabel.Left <- (base.ClientSize.Width - usernameLabel.Width) / 2
-
         base.Controls.Add(usernameLabel)
 
+        let mutable btnList = []
+        buttonTitles
+        |> List.iteri (fun i title ->
+            let button = new Button(Text = title, Width = buttonWidth, Height = 30)
+            let isLeft = i % 2 = 0
+            button.Left <- if isLeft then leftMargin else rightMargin
+            button.Top <- usernameLabel.Top + 80 + (i / 2) * (button.Height + verticalSpacing)
+
+            // Add click event to each button
+            button.Click.Add(fun _ ->
+                let form = new SampleForm(title)
+                form.ShowDialog() |> ignore
+            )
+
+            // Add button to the main form
+            btnList <- (button :> Control) :: btnList 
+        )
+        base.Controls.AddRange((Array.ofList btnList))
 
 
 

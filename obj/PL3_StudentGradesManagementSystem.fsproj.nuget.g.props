@@ -5,15 +5,15 @@
     <RestoreTool Condition=" '$(RestoreTool)' == '' ">NuGet</RestoreTool>
     <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">$(MSBuildThisFileDirectory)project.assets.json</ProjectAssetsFile>
     <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
-    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\RTX\.nuget\packages\</NuGetPackageFolders>
+    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\Master\.nuget\packages\</NuGetPackageFolders>
     <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
-    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.9.1</NuGetToolVersion>
+    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.9.2</NuGetToolVersion>
   </PropertyGroup>
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <SourceRoot Include="C:\Users\RTX\.nuget\packages\" />
+    <SourceRoot Include="C:\Users\Master\.nuget\packages\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgOxyPlot_WindowsForms Condition=" '$(PkgOxyPlot_WindowsForms)' == '' ">C:\Users\RTX\.nuget\packages\oxyplot.windowsforms\2.2.0</PkgOxyPlot_WindowsForms>
-    <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\RTX\.nuget\packages\fsharp.core\8.0.401</PkgFSharp_Core>
+    <PkgOxyPlot_WindowsForms Condition=" '$(PkgOxyPlot_WindowsForms)' == '' ">C:\Users\Master\.nuget\packages\oxyplot.windowsforms\2.2.0</PkgOxyPlot_WindowsForms>
+    <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\Master\.nuget\packages\fsharp.core\8.0.200</PkgFSharp_Core>
   </PropertyGroup>
 </Project>
