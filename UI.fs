@@ -1,9 +1,9 @@
 ﻿module UI
 
+open Types
+open Handlers
 open System.Windows.Forms
 open System.Drawing
-open Handlers
-open Types
 open OxyPlot
 open OxyPlot.WindowsForms
 
@@ -12,13 +12,8 @@ open OxyPlot.WindowsForms
 type StatisticsForm(handler: MyFormHandler, classId: int) = 
     inherit Form(Text = "Class " + string classId + " Statistics", Width = 500, Height = 400)
     
-    let data = [
-                { ClassId = 1; PassCount = 30; FailCount = 5 ; SubjectName = Arabic }
-                { ClassId = 1; PassCount = 25; FailCount = 10; SubjectName = Math }
-                { ClassId = 1; PassCount = 35; FailCount = 2 ; SubjectName = English }
-                { ClassId = 1; PassCount = 35; FailCount = 2 ; SubjectName = Science }
-              ]
-    let model = new PlotModel(Title = "Pass/Fail Statistics per Class")
+    let data = handler.GetClassStats(classId)
+    let model = new PlotModel(Title = "Pass/Fail Statistics For Class " + string classId)
 
     // Create series for Pass and Fail counts
     let passSeries = new OxyPlot.Series.BarSeries(Title = "Pass", StrokeColor = OxyColors.Black, StrokeThickness = 1.0)
@@ -33,7 +28,7 @@ type StatisticsForm(handler: MyFormHandler, classId: int) =
 
         // Set the categories on the X-axis
         model.Axes.Add(new OxyPlot.Axes.CategoryAxis(
-                                Position = OxyPlot.Axes.AxisPosition.Bottom,
+                                Position = OxyPlot.Axes.AxisPosition.Left,
                                 Key = "Class",
                                 ItemsSource = (data |> List.map (fun s -> s.SubjectName))))
 
@@ -43,7 +38,7 @@ type StatisticsForm(handler: MyFormHandler, classId: int) =
 
       
         let plotView = new PlotView(Model = model)
-        plotView.Dock <- DockStyle.Top
+        plotView.Dock <- DockStyle.Fill
 
         // Add the plot view to the form
         base.Controls.Add(plotView)
@@ -54,7 +49,8 @@ type StatisticsForm(handler: MyFormHandler, classId: int) =
 
 
 type StudentForm(handler: MyFormHandler, user: User) = 
-    inherit Form(Text = "Welcome " + user.Username + "!", Width = 500, Height = 400)
+    inherit Form(Text = "Welcome " + user.Username + "!", Width = 500, Height = 400
+                            , StartPosition=FormStartPosition.CenterScreen)
 
     let student = handler.GetStudent(user.ID)
 
@@ -138,7 +134,7 @@ type StudentForm(handler: MyFormHandler, user: User) =
         // Add click event handler
         button.Click.Add(fun _ ->
             // Create and show the second form
-            let secondForm = new StatisticsForm(handler, 1)
+            let secondForm = new StatisticsForm(handler, student.Value.ClassId)
             secondForm.ShowDialog() |> ignore  
         )
 
@@ -152,27 +148,51 @@ type StudentForm(handler: MyFormHandler, user: User) =
 
 
 type AdminForm(handler: MyFormHandler, user: User) = 
-     inherit Form(Text = "AdminLogin", Width = 500, Height = 400)
+     inherit Form(Text = "Adminstration", Width = 500, Height = 400
+                            , StartPosition=FormStartPosition.CenterScreen)
 
-     let usernameLabel = new Label(Text = "Hello Admin", Top = 20, Left=20, Width=80)
+     let usernameLabel = new Label(Text = "Welcome Admin "  + user.Username + "!", Top = 20, Width=500, Height=30)
+
      do
+        usernameLabel.Font <- new Font(usernameLabel.Font.FontFamily, 14.0f, FontStyle.Bold)
+        usernameLabel.TextAlign <- ContentAlignment.TopCenter
+        //usernameLabel.Left <- (base.ClientSize.Width - usernameLabel.Width) / 2
+
         base.Controls.Add(usernameLabel)
 
 
+
+
+
 type LoginForm(handler: MyFormHandler) as this = 
-    inherit Form(Text = "Login", Width = 500, Height = 400)
+    inherit Form(Text = "Login", Width = 400, Height = 300, StartPosition=FormStartPosition.CenterScreen)
 
     // Fields to hold user inputs
-    let usernameLabel = new Label(Text = "Username:", Top = 20, Left=20, Width=80)
-    let usernameTextBox = new TextBox(Top = 20, Left = 110, Width = 150)
+    let usernameLabel = new Label(Text = "Username:", AutoSize=true)
+    let usernameTextBox = new TextBox()
 
-    let passwordLabel = new Label(Text = "Password:", Top = 60, Left = 20, Width = 80)
-    let passwordTextBox = new TextBox(Top = 60, Left = 110, Width = 150, PasswordChar = '*')
+    let passwordLabel = new Label(Text = "Password:", AutoSize=true)
+    let passwordTextBox = new TextBox(PasswordChar = '*')
 
-    let loginButton = new Button(Text = "Login", Top = 100, Left = 110, Width = 80)
+    let loginButton = new Button(Text = "Login", Width = 100)
 
     // Constructor to initialize the form
     do
+        
+
+        usernameLabel.Location <- Point(80, 30)
+        usernameTextBox.Location <- Point(150, 30)
+        usernameTextBox.Width <- 120
+
+
+
+        passwordLabel.Location <- Point(80, 70)
+        passwordTextBox.Location <- Point(150, 70)
+        passwordTextBox.Width <- 120
+
+        loginButton.Width <- 80
+        loginButton.Location <- Point( 150 , 70 + 50)
+
         base.Controls.Add(usernameLabel)
        
         base.Controls.Add(usernameTextBox)

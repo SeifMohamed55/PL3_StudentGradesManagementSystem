@@ -1,6 +1,5 @@
 ﻿module Types
 
-
 type UserRole =
         | Admin
         | Student
@@ -28,3 +27,8 @@ type Student = {
     Grades: Map<Subject, int>
 }
 
+type SubjectStats = {
+    SubjectName: Subject
+    PassCount: int
+    FailCount: int
+}
