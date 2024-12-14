@@ -150,7 +150,6 @@ type MyFormHandler() =
     member this.GetSummaryInClass (classId:int) = 
             let students = this.GetStudentsInClass classId
             let mutable gradesSeq = Seq.empty<(Subject*int)>
-            let mutable max_low_sub = Map.empty<Subject,(int*int)> 
             students |>
             List.iter<Student> (fun student -> 
                let studentGrades = (Map.toSeq student.Grades)  
