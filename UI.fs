@@ -302,12 +302,9 @@ type AddAdminForm(handler: MyFormHandler) as this =
         adminLabel.Left <- 20
         adminLabel.Font <-  new Font (adminLabel.Font.FontFamily, 16.0f, FontStyle.Bold||| FontStyle.Italic ||| FontStyle.Underline)
 
-
         usernameLabel.Location <- Point(140, 100)
         usernameTextBox.Location <- Point(210, 100)
         usernameTextBox.Width <- 120
-
-
 
         passwordLabel.Location <- Point(140, 140)
         passwordTextBox.Location <- Point(210, 140)
@@ -346,8 +343,97 @@ type AddAdminForm(handler: MyFormHandler) as this =
 
 
 
-type AddStudentForm(handler: MyFormHandler) as this = 
-    inherit Form(Text = "Add Admin", Width = 500, Height = 400, StartPosition=FormStartPosition.WindowsDefaultLocation)
+type AddStudentForm(handler: MyFormHandler) as this =
+    inherit Form(Text = "Add Student", Width = 400, Height = 400)
+
+    // Create labels and textboxes for each field
+    let usernameLabel = new Label(Text = "Username:", Top = 20, Left = 50, Width = 100)
+    let usernameTextBox = new TextBox(Top = 20, Left = 160, Width = 150)
+
+    let passwordLabel = new Label(Text = "Password:", Top = 60, Left = 50, Width = 100)
+    let passwordTextbox = new TextBox(Top = 60, Left = 160, Width = 150, PasswordChar = '*')
+
+    let classLabel = new Label(Text = "Class Number:", Top = 100, Left = 50, Width = 100)
+    let classTextBox = new TextBox(Top = 100, Left = 160, Width = 150)
+
+    let subjects = [  Subject.Math;  Subject.Arabic;  Subject.English;  Subject.Science ]
+
+    let labelsAndBoxes =
+        subjects
+        |> List.mapi (fun i labelText ->
+            let label = new Label(Text = string labelText, Top = 140 + i * 40, Left = 50, Width = 100)
+            let textBox = new TextBox(Top = 140 + i * 40, Left = 160, Width = 150)
+            (label, textBox)
+        )
+
+    // Button to add the student
+    let addButton = new Button(Text = "Add Student", Top = 300, Left = 130, Width = 100)
+
+    do
+        // Add controls to the form
+        this.Controls.AddRange([|
+            usernameLabel; usernameTextBox
+            passwordLabel; passwordTextbox
+            classLabel; classTextBox
+        |])
+
+        labelsAndBoxes |> 
+        List.iter(fun labelAndBox -> 
+                    this.Controls.Add (fst labelAndBox)
+                    this.Controls.Add (snd labelAndBox)
+                 ) 
+        this.Controls.Add(addButton)
+
+        // Add click event handler
+        addButton.Click.Add(fun _ ->
+            try
+                // Gather data from textboxes
+                let username = usernameTextBox.Text
+                let password = passwordTextbox.Text
+                let classNumber = int(classTextBox.Text)
+                let grades =  // may get parsing error so exception down there
+                            List.map2<Subject , (Label * TextBox) , (Subject * int)> (fun subject (_, box) -> 
+                                                (subject, int(box.Text))
+                            ) subjects labelsAndBoxes 
+                            
+
+                // Validate inputs
+                if handler.IsNullOrEmptyString(username) then
+                    MessageBox.Show("Username is required.") |> ignore
+
+                elif handler.UserNameExist username then
+                    MessageBox.Show("Username is already taken.") |> ignore
+
+                elif handler.IsNullOrEmptyString(password) then
+                    MessageBox.Show("Password is required.") |> ignore
+
+                elif not(handler.IsClassAvailable classNumber) then
+                     MessageBox.Show("Class does not exist") |> ignore
+
+                elif not (grades |> List.forall (fun (_, grade) -> (grade >= 0 && grade <= 100))) then
+                    MessageBox.Show($"Grade number is invalid: Valid range (0, {handler.FinalGrade})") |> ignore
+
+                else
+                    let student = {     Username= username;
+                                        Password= password;
+                                        ClassId= classNumber
+                                        Grades= grades |> Map.ofList                                 
+                                  }
+                    match handler.CreateStudent(student) with
+                        | true -> MessageBox.Show("Student added successfully!") |> ignore
+                                  this.Hide()
+
+                        | false -> MessageBox.Show("Error Occured!") |> ignore
+            with
+            | :? FormatException ->
+                MessageBox.Show("Invalid input. Please enter valid numbers for class and grades.") |> ignore
+        )
+        base.AcceptButton <- addButton
+
+
+
+
+
 
 type AdminForm(handler: MyFormHandler, user: User) = 
      inherit Form(Text = "Adminstration", Width = 500, Height = 400
@@ -384,7 +470,7 @@ type AdminForm(handler: MyFormHandler, user: User) =
                                                         let form = new AddAdminForm(handler)
                                                         form.ShowDialog() |> ignore
                                                   )
-                            | "Edit User" -> button.Click.Add(fun _ ->
+                            | "View Users" -> button.Click.Add(fun _ ->
                                                             let form = new SampleForm(title)
                                                             form.ShowDialog() |> ignore
                                                    )

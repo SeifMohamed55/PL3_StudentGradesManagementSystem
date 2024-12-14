@@ -32,3 +32,10 @@ type SubjectStats = {
     PassCount: int
     FailCount: int
 }
+
+type StudentFormDTO = {
+    Username: string
+    Password: string
+    ClassId: int
+    Grades: Map<Subject, int>
+}

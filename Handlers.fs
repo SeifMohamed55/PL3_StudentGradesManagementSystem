@@ -72,7 +72,9 @@ type MyFormHandler() =
 
     let availableClasses = [1; 2; 3]
 
-    member this.UserNameExist (username:string) : bool = List.contains username (List.map (fun x-> x.Username) users)
+    let NextAvailableId() = List.tryLast (List.map (fun x-> x.ID) users)
+
+    member this.UserNameExist (username:string) : bool = List.contains username (List.map<User,string> (fun x-> x.Username) users)
 
     member this.FinalGrade = 100
 
@@ -86,7 +88,7 @@ type MyFormHandler() =
         | Student -> false
 
     member this.Login(username, password) = 
-             match List.tryFind (fun x -> x.Username = username) users with
+             match List.tryFind<User> (fun x -> x.Username = username) users with
                 | Some user when user.Password = password -> Some user
                 | _ -> None
 
@@ -114,6 +116,9 @@ type MyFormHandler() =
 
     member this.GetStudentsInClass(classId: int) = 
          List.filter (fun (x:Student) -> x.ClassId = classId) students
+
+    member this.GetStudent() = 
+         students
 
     member this.GetStudentsPassMap(students: Student list) =
          let listFinal = []
@@ -177,13 +182,33 @@ type MyFormHandler() =
     member this.CreateAdmin (username:string) (password:string) : bool = 
         if this.UserNameExist username || this.IsNullOrEmptyString username || this.IsNullOrEmptyString password  then false 
         else 
-            let newAdminId = List.tryLast (List.map (fun x-> x.ID) users)
+            let newAdminId = NextAvailableId()
             match newAdminId with
                 | None -> false
                 | Some id -> 
                             let newAdmin = {ID = id + 1 ; Username = username ; Password = password ; Role = Admin }
                             users <-  users @ [newAdmin]
                             true
+
+    member this.CreateStudent(studentDTO: StudentFormDTO) = 
+        let newId  = NextAvailableId()
+        match newId with
+                | None -> false
+                | Some id -> 
+                            let user = {ID = id + 1 ; Username = studentDTO.Username; Password= studentDTO.Password; Role = Student} 
+                            users <- users @ [user]
+                            let student = {User = user ; ClassId = studentDTO.ClassId; Grades=studentDTO.Grades}
+                            students <- students @ [student]
+                            true
+        
+        
                             
                         
             
+(*type User = {
+    ID: int
+    Username: string
+    Password: string
+    Role: UserRole
+}
+*)
