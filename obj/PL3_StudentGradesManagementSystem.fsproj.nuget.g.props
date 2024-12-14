@@ -5,15 +5,15 @@
     <RestoreTool Condition=" '$(RestoreTool)' == '' ">NuGet</RestoreTool>
     <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">$(MSBuildThisFileDirectory)project.assets.json</ProjectAssetsFile>
     <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
-    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\TIBA\.nuget\packages\</NuGetPackageFolders>
+    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\ALY\.nuget\packages\</NuGetPackageFolders>
     <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
     <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.11.1</NuGetToolVersion>
   </PropertyGroup>
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <SourceRoot Include="C:\Users\TIBA\.nuget\packages\" />
+    <SourceRoot Include="C:\Users\ALY\.nuget\packages\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgOxyPlot_WindowsForms Condition=" '$(PkgOxyPlot_WindowsForms)' == '' ">C:\Users\TIBA\.nuget\packages\oxyplot.windowsforms\2.2.0</PkgOxyPlot_WindowsForms>
-    <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\TIBA\.nuget\packages\fsharp.core\8.0.403</PkgFSharp_Core>
+    <PkgOxyPlot_WindowsForms Condition=" '$(PkgOxyPlot_WindowsForms)' == '' ">C:\Users\ALY\.nuget\packages\oxyplot.windowsforms\2.2.0</PkgOxyPlot_WindowsForms>
+    <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\ALY\.nuget\packages\fsharp.core\8.0.403</PkgFSharp_Core>
   </PropertyGroup>
 </Project>

@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "rc9E9gK/FGM=",
+  "dgSpecHash": "1Gi1qwDLjfE=",
   "success": true,
-  "projectFilePath": "C:\\Users\\TIBA\\Documents\\GitHub\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
+  "projectFilePath": "D:\\FCAIH - Materials\\Programming 3\\project\\Github Project\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
   "expectedPackageFiles": [
-    "C:\\Users\\TIBA\\.nuget\\packages\\fsharp.core\\8.0.403\\fsharp.core.8.0.403.nupkg.sha512",
-    "C:\\Users\\TIBA\\.nuget\\packages\\oxyplot.core\\2.2.0\\oxyplot.core.2.2.0.nupkg.sha512",
-    "C:\\Users\\TIBA\\.nuget\\packages\\oxyplot.windowsforms\\2.2.0\\oxyplot.windowsforms.2.2.0.nupkg.sha512"
+    "C:\\Users\\ALY\\.nuget\\packages\\fsharp.core\\8.0.403\\fsharp.core.8.0.403.nupkg.sha512",
+    "C:\\Users\\ALY\\.nuget\\packages\\oxyplot.core\\2.2.0\\oxyplot.core.2.2.0.nupkg.sha512",
+    "C:\\Users\\ALY\\.nuget\\packages\\oxyplot.windowsforms\\2.2.0\\oxyplot.windowsforms.2.2.0.nupkg.sha512"
   ],
   "logs": []
 }

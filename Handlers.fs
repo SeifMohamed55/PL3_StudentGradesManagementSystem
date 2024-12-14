@@ -112,6 +112,14 @@ type MyFormHandler() =
         | English -> "English"
         | Arabic -> "Arabic"
 
+    member this.GetSubjectFromString(subject: string) = 
+        match subject with
+        | "Math"-> Math 
+        | "Science" -> Science
+        | "English" -> English
+        | "Arabic" -> Arabic
+        | _ -> failwith "couldn't parse subject"
+
 
 
     member this.GetStudentsInClass(classId: int) = 
@@ -119,6 +127,9 @@ type MyFormHandler() =
 
     member this.GetStudents() = 
          students
+
+    member this.GetAdmins() =
+        users |> List.filter (fun user -> user.Role = Admin)
 
     member this.GetStudentsPassMap(students: Student list) =
          let listFinal = []
@@ -200,13 +211,30 @@ type MyFormHandler() =
                             let student = {User = user ; ClassId = studentDTO.ClassId; Grades=studentDTO.Grades}
                             students <- students @ [student]
                             true
+
+    member this.EditStudent(studentDTO: StudentFormDTO)  id = 
+        let studentOption = this.GetStudent id        
+        match studentOption with
+            | Some student -> 
+                            let user = {ID = id ; Username = studentDTO.Username; Password= studentDTO.Password; Role = Student} 
+                            users <- users |> 
+                            List.map(fun userIter ->
+                                if userIter.ID = id then user else userIter
+                            )
+                            let student = {User = user ; ClassId = id; Grades=studentDTO.Grades}
+                            students <- students |> 
+                            List.map(fun studentIter ->
+                                if studentIter.User.ID = id then student else studentIter
+                            )
+                            (true, Some student)
+            | None -> (false, None)
+
         
     member this.DeleteStudent(studentId:int) = 
         students <- students |> List.where (fun student -> student.User.ID <> studentId)
         users <- users |> List.where (fun student -> student.ID <> studentId)
                             
                         
-            
 (*type User = {
     ID: int
     Username: string

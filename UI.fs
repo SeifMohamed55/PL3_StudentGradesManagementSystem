@@ -343,12 +343,16 @@ type AddAdminForm(handler: MyFormHandler) as this =
 
 
 
-type AddStudentForm(handler: MyFormHandler) as this =
-    inherit Form(Text = "Add Student", Width = 400, Height = 400)
+type AddEditStudentForm(handler: MyFormHandler, studentPlaceHolder: Student option) as this =
+    inherit Form(Text = match studentPlaceHolder with 
+                        |Some student -> "Edit Student"
+                        |None -> "Add Student"
+                , Width = 400, Height = 400)
 
+    let mutable studentPlaceHolder = studentPlaceHolder
     // Create labels and textboxes for each field
     let usernameLabel = new Label(Text = "Username:", Top = 20, Left = 50, Width = 100)
-    let usernameTextBox = new TextBox(Top = 20, Left = 160, Width = 150)
+    let usernameTextBox = new TextBox(Top = 20, Left = 160, Width = 150 )
 
     let passwordLabel = new Label(Text = "Password:", Top = 60, Left = 50, Width = 100)
     let passwordTextbox = new TextBox(Top = 60, Left = 160, Width = 150, PasswordChar = '*')
@@ -367,70 +371,101 @@ type AddStudentForm(handler: MyFormHandler) as this =
         )
 
     // Button to add the student
-    let addButton = new Button(Text = "Add Student", Top = 300, Left = 130, Width = 100)
+    let addButton = new Button(Text = match studentPlaceHolder with 
+                                        |Some student -> "Edit Student"
+                                        |None -> "Add Student"
+                              , Top = 300, Left = 130, Width = 100)
 
     do
-        // Add controls to the form
-        this.Controls.AddRange([|
-            usernameLabel; usernameTextBox
-            passwordLabel; passwordTextbox
-            classLabel; classTextBox
-        |])
+        try
+            match studentPlaceHolder with
+                | Some student ->
+                                usernameTextBox.Text <- student.User.Username
+                                passwordTextbox.Text <- student.User.Password
+                                classTextBox.Text <- string student.ClassId
+                                labelsAndBoxes |> 
+                                List.iter(fun (label, box) ->
+                                           let subj = handler.GetSubjectFromString label.Text 
+                                           box.Text <- string (student.Grades.Item subj)
+                                )
+                | _ -> ignore()
 
-        labelsAndBoxes |> 
-        List.iter(fun labelAndBox -> 
-                    this.Controls.Add (fst labelAndBox)
-                    this.Controls.Add (snd labelAndBox)
-                 ) 
-        this.Controls.Add(addButton)
+            // Add controls to the form
+            this.Controls.AddRange([|
+                usernameLabel; usernameTextBox
+                passwordLabel; passwordTextbox
+                classLabel; classTextBox
+            |])
 
-        // Add click event handler
-        addButton.Click.Add(fun _ ->
-            try
-                // Gather data from textboxes
-                let username = usernameTextBox.Text
-                let password = passwordTextbox.Text
-                let classNumber = int(classTextBox.Text)
-                let grades =  // may get parsing error so exception down there
-                            List.map2<Subject , (Label * TextBox) , (Subject * int)> (fun subject (_, box) -> 
-                                                (subject, int(box.Text))
-                            ) subjects labelsAndBoxes 
+            labelsAndBoxes |> 
+            List.iter(fun labelAndBox -> 
+                        this.Controls.Add (fst labelAndBox)
+                        this.Controls.Add (snd labelAndBox)
+                     ) 
+            this.Controls.Add(addButton)
+
+            // Add click event handler
+            addButton.Click.Add(fun _ ->
+                try
+                    // Gather data from textboxes
+                    let username = usernameTextBox.Text
+                    let password = passwordTextbox.Text
+                    let classNumber = int(classTextBox.Text)
+                    let grades =  // may get parsing error so exception down there
+                                List.map2<Subject , (Label * TextBox) , (Subject * int)> (fun subject (_, box) -> 
+                                                    (subject, int(box.Text))
+                                ) subjects labelsAndBoxes 
                             
 
-                // Validate inputs
-                if handler.IsNullOrEmptyString(username) then
-                    MessageBox.Show("Username is required.") |> ignore
+                    // Validate inputs
+                    if handler.IsNullOrEmptyString(username) then
+                        MessageBox.Show("Username is required.") |> ignore
 
-                elif handler.UserNameExist username then
-                    MessageBox.Show("Username is already taken.") |> ignore
+                    elif (handler.UserNameExist username) && (studentPlaceHolder.IsNone)then
+                        MessageBox.Show("Username is already taken.") |> ignore
 
-                elif handler.IsNullOrEmptyString(password) then
-                    MessageBox.Show("Password is required.") |> ignore
+                    elif handler.IsNullOrEmptyString(password) then
+                        MessageBox.Show("Password is required.") |> ignore
 
-                elif not(handler.IsClassAvailable classNumber) then
-                     MessageBox.Show("Class does not exist") |> ignore
+                    elif not(handler.IsClassAvailable classNumber) then
+                         MessageBox.Show("Class does not exist") |> ignore
 
-                elif not (grades |> List.forall (fun (_, grade) -> (grade >= 0 && grade <= 100))) then
-                    MessageBox.Show($"Grade number is invalid: Valid range (0, {handler.FinalGrade})") |> ignore
+                    elif not (grades |> List.forall (fun (_, grade) -> (grade >= 0 && grade <= 100))) then
+                        MessageBox.Show($"Grade number is invalid: Valid range (0, {handler.FinalGrade})") |> ignore
 
-                else
-                    let student = {     Username= username;
-                                        Password= password;
-                                        ClassId= classNumber
-                                        Grades= grades |> Map.ofList                                 
-                                  }
-                    match handler.CreateStudent(student) with
-                        | true -> MessageBox.Show("Student added successfully!") |> ignore
-                                  this.Hide()
+                    else
+                        let studentDTO = {  Username= username;
+                                            Password= password;
+                                            ClassId= classNumber
+                                            Grades= grades |> Map.ofList                                 
+                                      }
+                        match studentPlaceHolder with
+                            | Some student -> match handler.EditStudent(studentDTO) (student.User.ID) with
+                                                 | (true, Some editedStudent) ->    MessageBox.Show("Student edited successfully!") |> ignore
+                                                                                    this.Hide()
+                                                                                    this.EditedStudent <- (Some editedStudent)
 
-                        | false -> MessageBox.Show("Error Occured!") |> ignore
-            with
-            | :? FormatException ->
-                MessageBox.Show("Invalid input. Please enter valid numbers for class and grades.") |> ignore
-        )
-        base.AcceptButton <- addButton
+                                                 | (false, _) ->   MessageBox.Show("Error Occured!") |> ignore
 
+                                                 | _ -> MessageBox.Show("Error Occured!") |> ignore
 
+                            | None -> match handler.CreateStudent(studentDTO) with
+                                            | true -> MessageBox.Show("Student added successfully!") |> ignore
+                                                      this.Hide()
+
+                                            | false -> MessageBox.Show("Error Occured!") |> ignore
+                        
+                with
+                | :? FormatException ->
+                    MessageBox.Show("Invalid input. Please enter valid numbers for class and grades.") |> ignore
+            )
+            base.AcceptButton <- addButton
+        with
+            | ex -> MessageBox.Show("Invalid input. Please enter valid numbers for class and grades.") |> ignore
+
+    member this.EditedStudent
+        with get() = studentPlaceHolder    // Getter: returns the value of _name
+        and set(value) = studentPlaceHolder <- value  // Setter: sets the value of _name
 
 type ViewUsersForm(handler: MyFormHandler) as this =
     inherit Form(Text = "Students", Width = 800, Height = 600)
@@ -460,11 +495,12 @@ type ViewUsersForm(handler: MyFormHandler) as this =
 
         // Add Edit Button Column
         let editButtonColumn = new DataGridViewButtonColumn(HeaderText = "Edit", Text = "Edit", UseColumnTextForButtonValue = true)
-        dataGridView.Columns.Add(editButtonColumn) |> ignore
+        let editButCol = dataGridView.Columns.Add(editButtonColumn) 
 
         // Add Remove Button Column
         let removeButtonColumn = new DataGridViewButtonColumn(HeaderText = "Remove", Text = "Remove", UseColumnTextForButtonValue = true)
-        dataGridView.Columns.Add(removeButtonColumn) |> ignore
+        let removeButCol = dataGridView.Columns.Add(removeButtonColumn)
+
 
         try
             // Populate Rows
@@ -491,15 +527,30 @@ type ViewUsersForm(handler: MyFormHandler) as this =
                 if e.RowIndex >= 0 then
                     let studentId = dataGridView.Rows[e.RowIndex].Cells.[0].Value :?> int
                     match e.ColumnIndex with
-                    | 7 -> // Edit button column index
-                        let editForm = new Form(Text = $"Edit Student {studentId}", Width = 300, Height = 200)
+                    | x when x = editButCol -> // Edit button column index
+                        let student = handler.GetStudent studentId
+                        let editForm = new AddEditStudentForm(handler, student)
                         editForm.ShowDialog() |> ignore
-                    | 8 -> // Remove button column index
-                        MessageBox.Show($"Remove Student {studentId}") |> ignore
+                        match editForm.EditedStudent with 
+                                                | Some editedStudent ->
+                                                            dataGridView.Rows[e.RowIndex].Cells.[0].Value <- editedStudent.User.ID
+                                                            dataGridView.Rows[e.RowIndex].Cells.[1].Value <- editedStudent.User.Username
+                                                            dataGridView.Rows[e.RowIndex].Cells.[2].Value <- editedStudent.User.Password
+                                                            dataGridView.Rows[e.RowIndex].Cells.[3].Value <- editedStudent.ClassId
+                                                            dataGridView.Rows[e.RowIndex].Cells.[4].Value <-(editedStudent.Grades.Item Subject.Math)
+                                                            dataGridView.Rows[e.RowIndex].Cells.[5].Value <-(editedStudent.Grades.Item Subject.Arabic)
+                                                            dataGridView.Rows[e.RowIndex].Cells.[6].Value <-(editedStudent.Grades.Item Subject.English)
+                                                            dataGridView.Rows[e.RowIndex].Cells.[7].Value <-(editedStudent.Grades.Item Subject.Science)
+                                                | None -> ignore()
+
+                    | y when y = removeButCol -> // Remove button column index
+                        handler.DeleteStudent(studentId)
+                        dataGridView.Rows.RemoveAt(e.RowIndex)
+                        MessageBox.Show($"Student {studentId} removed Successfully") |> ignore
+
                     | _ -> ()
             )
 
-            // Add Controls to the form
             this.Controls.Add(dataGridView)
             this.Controls.Add(headerLabel) 
         with
@@ -516,7 +567,7 @@ type AdminForm(handler: MyFormHandler, user: User) =
      let buttonWidth = 150
      let leftMargin, rightMargin = 30, 300
      let verticalSpacing = 20
-     let buttonTitles = [ "Add Student"; "Add Admin"; "Edit User"; "View Statistics"; "Remove User";  "View Summary"]
+     let buttonTitles = [ "Add Student"; "Add Admin"; "View Users"; "View Admins"; "View Statistics";  "View Summary"]
 
 
 
@@ -533,9 +584,9 @@ type AdminForm(handler: MyFormHandler, user: User) =
             button.Left <- if isLeft then leftMargin else rightMargin
             button.Top <- usernameLabel.Top + 80 + (i / 2) * (button.Height + verticalSpacing)
 
-            let btnCases = match title with 
+            match title with 
                             | "Add Student" -> button.Click.Add(fun _ ->
-                                                        let form = new AddStudentForm(handler)
+                                                        let form = new AddEditStudentForm(handler, None)
                                                         form.ShowDialog() |> ignore
                                                    )
                             | "Add Admin" ->button.Click.Add(fun _ ->
@@ -543,14 +594,14 @@ type AdminForm(handler: MyFormHandler, user: User) =
                                                         form.ShowDialog() |> ignore
                                                   )
                             | "View Users" -> button.Click.Add(fun _ ->
-                                                            let form = new SampleForm(title)
+                                                            let form = new ViewUsersForm(handler)
                                                             form.ShowDialog() |> ignore
                                                    )
                             | "View Statistics" ->button.Click.Add(fun _ ->
                                                         let form = new ClassNumberQuestionForm(handler, typeof<StatisticsForm>)
                                                         form.ShowDialog() |> ignore
                                                   )
-                            | "Remove User" -> button.Click.Add(fun _ ->
+                            | "View Admins" -> button.Click.Add(fun _ ->
                                                         let form = new SampleForm(title)
                                                         form.ShowDialog() |> ignore
                                                   )
