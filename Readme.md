@@ -27,9 +27,9 @@ The project is divided into several tasks. Below is the progress status:
 - **Task 10:** Re-Update Statistics Form
 - **Task 11:** Add Admin Form
 - **Task 12:** Add Student Form
-
-### Tasks In Progress
 - **Task 13:** Add View Student Form
+- 
+### Tasks In Progress
 - **Task 14:** Update Add Student Form to Include Edit Functionality
 - **Task 15:** Delete/Edit Admin Form
 - **Task 16:** Apply Final Touches
