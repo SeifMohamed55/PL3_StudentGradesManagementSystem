@@ -117,7 +117,7 @@ type MyFormHandler() =
     member this.GetStudentsInClass(classId: int) = 
          List.filter (fun (x:Student) -> x.ClassId = classId) students
 
-    member this.GetStudent() = 
+    member this.GetStudents() = 
          students
 
     member this.GetStudentsPassMap(students: Student list) =
@@ -201,7 +201,9 @@ type MyFormHandler() =
                             students <- students @ [student]
                             true
         
-        
+    member this.DeleteStudent(studentId:int) = 
+        students <- students |> List.where (fun student -> student.User.ID <> studentId)
+        users <- users |> List.where (fun student -> student.ID <> studentId)
                             
                         
             

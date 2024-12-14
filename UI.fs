@@ -432,7 +432,79 @@ type AddStudentForm(handler: MyFormHandler) as this =
 
 
 
+type ViewUsersForm(handler: MyFormHandler) as this =
+    inherit Form(Text = "Students", Width = 800, Height = 600)
 
+    let headerLabel = 
+        new Label(
+            Text = "All Student Details", 
+            Font = new Font("Arial", 16.0f, FontStyle.Bold), 
+            TextAlign = ContentAlignment.MiddleCenter, 
+            Dock = DockStyle.Top, 
+            Height = 50
+        )
+
+    let dataGridView = new DataGridView(Dock = DockStyle.Fill, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill)
+    let students = handler.GetStudents()
+
+    do
+        // Initialize Columns
+        dataGridView.Columns.Add("ID", "ID") |> ignore
+        dataGridView.Columns.Add("Name", "Name") |> ignore
+        dataGridView.Columns.Add("Password", "Password") |> ignore
+        dataGridView.Columns.Add("ClassNumber", "Class Number") |> ignore
+        dataGridView.Columns.Add(string Subject.Math,   string Subject.Math ) |> ignore
+        dataGridView.Columns.Add(string Subject.Arabic, string Subject.Arabic ) |> ignore
+        dataGridView.Columns.Add(string Subject.English,string Subject.English ) |> ignore
+        dataGridView.Columns.Add(string Subject.Science,string Subject.Science ) |> ignore
+
+        // Add Edit Button Column
+        let editButtonColumn = new DataGridViewButtonColumn(HeaderText = "Edit", Text = "Edit", UseColumnTextForButtonValue = true)
+        dataGridView.Columns.Add(editButtonColumn) |> ignore
+
+        // Add Remove Button Column
+        let removeButtonColumn = new DataGridViewButtonColumn(HeaderText = "Remove", Text = "Remove", UseColumnTextForButtonValue = true)
+        dataGridView.Columns.Add(removeButtonColumn) |> ignore
+
+        try
+            // Populate Rows
+            students |> List.iter (fun student ->
+            
+                dataGridView.Rows.Add(
+                    [|
+                        box student.User.ID
+                        box student.User.Username
+                        box student.User.Password
+                        box student.ClassId
+                        box (student.Grades.Item Subject.Math)
+                        box (student.Grades.Item Subject.Arabic)
+                        box (student.Grades.Item Subject.English)
+                        box (student.Grades.Item Subject.Science)
+                        box "Edit"
+                        box "Remove"
+                    |]
+                ) |> ignore
+            )
+
+            // Handle Button Click Events
+            dataGridView.CellContentClick.Add(fun e ->
+                if e.RowIndex >= 0 then
+                    let studentId = dataGridView.Rows[e.RowIndex].Cells.[0].Value :?> int
+                    match e.ColumnIndex with
+                    | 7 -> // Edit button column index
+                        let editForm = new Form(Text = $"Edit Student {studentId}", Width = 300, Height = 200)
+                        editForm.ShowDialog() |> ignore
+                    | 8 -> // Remove button column index
+                        MessageBox.Show($"Remove Student {studentId}") |> ignore
+                    | _ -> ()
+            )
+
+            // Add Controls to the form
+            this.Controls.Add(dataGridView)
+            this.Controls.Add(headerLabel) 
+        with
+            | exn ->
+                MessageBox.Show("Something went wrong!") |> ignore
 
 
 type AdminForm(handler: MyFormHandler, user: User) = 
