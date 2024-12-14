@@ -31,7 +31,7 @@ type StatisticsForm(handler: MyFormHandler, classId: int) as this  =
         )
 
 
-        // Set the categories on the X-axis
+                // Set the categories on the X-axis
         model.Axes.Add(new OxyPlot.Axes.CategoryAxis(
                                 Position = OxyPlot.Axes.AxisPosition.Left,
                                 Key = "Class",
@@ -282,6 +282,73 @@ type ClassNumberQuestionForm(handler: MyFormHandler, formType: System.Type) as t
 
 
 
+type AddAdminForm(handler: MyFormHandler) as this = 
+    inherit Form(Text = "Add Admin", Width = 500, Height = 400, StartPosition=FormStartPosition.WindowsDefaultLocation)
+
+    let adminLabel = new Label(Text = "Enter Admin Info:", AutoSize=true, Width = 400, Height = 30)
+
+    // Fields to hold user inputs
+    let usernameLabel = new Label(Text = "Username:", AutoSize=true)
+    let usernameTextBox = new TextBox()
+
+    let passwordLabel = new Label(Text = "Password:", AutoSize=true)
+    let passwordTextBox = new TextBox(PasswordChar = '*')
+
+    let addAdminButton = new Button(Text = "Add Admin", Width = 100)
+
+    // Constructor to initialize the form
+    do
+        adminLabel.Top <- 20
+        adminLabel.Left <- 20
+        adminLabel.Font <-  new Font (adminLabel.Font.FontFamily, 16.0f, FontStyle.Bold||| FontStyle.Italic ||| FontStyle.Underline)
+
+
+        usernameLabel.Location <- Point(140, 100)
+        usernameTextBox.Location <- Point(210, 100)
+        usernameTextBox.Width <- 120
+
+
+
+        passwordLabel.Location <- Point(140, 140)
+        passwordTextBox.Location <- Point(210, 140)
+        passwordTextBox.Width <- 120
+
+        addAdminButton.Width <- 80
+        addAdminButton.Location <- Point( 210 , 140 + 50)
+
+        base.Controls.Add(adminLabel)
+
+        base.Controls.Add(usernameLabel)
+       
+        base.Controls.Add(usernameTextBox)
+
+        base.Controls.Add(passwordLabel)
+
+        base.Controls.Add(passwordTextBox)
+
+        base.Controls.Add(addAdminButton)
+
+        addAdminButton.Click.Add(fun _ ->
+            let username = usernameTextBox.Text
+            let password = passwordTextBox.Text
+            match ((handler.IsNullOrEmptyString username) || (handler.IsNullOrEmptyString password)) with
+                | true -> MessageBox.Show($"Please Fill out the Form!")|> ignore   
+                | false ->
+                        if handler.CreateAdmin username password then 
+                            MessageBox.Show($"Admin Created Successfully!")|> ignore 
+                            this.Close()
+                        else
+                             MessageBox.Show($"Username already exist") |> ignore
+                             this.Close()
+        )
+
+        base.AcceptButton <- addAdminButton
+
+
+
+type AddStudentForm(handler: MyFormHandler) as this = 
+    inherit Form(Text = "Add Admin", Width = 500, Height = 400, StartPosition=FormStartPosition.WindowsDefaultLocation)
+
 type AdminForm(handler: MyFormHandler, user: User) = 
      inherit Form(Text = "Adminstration", Width = 500, Height = 400
                             , StartPosition=FormStartPosition.CenterScreen)
@@ -310,11 +377,11 @@ type AdminForm(handler: MyFormHandler, user: User) =
 
             let btnCases = match title with 
                             | "Add Student" -> button.Click.Add(fun _ ->
-                                                        let form = new SampleForm(title)
+                                                        let form = new AddStudentForm(handler)
                                                         form.ShowDialog() |> ignore
                                                    )
                             | "Add Admin" ->button.Click.Add(fun _ ->
-                                                        let form = new SampleForm(title)
+                                                        let form = new AddAdminForm(handler)
                                                         form.ShowDialog() |> ignore
                                                   )
                             | "Edit User" -> button.Click.Add(fun _ ->
@@ -337,8 +404,8 @@ type AdminForm(handler: MyFormHandler, user: User) =
                             | _ -> ignore()
 
 
-            // Add button to the main form
-            btnList <- (button :> Control) :: btnList 
+            // cast the btn to Control
+            btnList <- btnList  @ [(button :> Control)]
         )
         base.Controls.AddRange((Array.ofList btnList))
 
@@ -390,7 +457,7 @@ type LoginForm(handler: MyFormHandler) as this =
             let password = passwordTextBox.Text
             match handler.Login(username, password) with
                         | Some user -> match user.Role with
-                                            | Admin ->  let form = new AdminForm(handler, user)
+                                            | Admin ->  let form = new AdminForm(this.FormHandlers, user)
                                                         try
                                                             this.Hide() 
                                                             form.ShowDialog() |> ignore 
@@ -399,7 +466,7 @@ type LoginForm(handler: MyFormHandler) as this =
                                                             | :? System.InvalidOperationException -> printfn "Invalid Operation"
                                                             | (ex:exn) -> printfn "exception occured:s %s" ex.Message
                                                        
-                                            | Student-> let form = new StudentForm(handler, user)
+                                            | Student-> let form = new StudentForm(this.FormHandlers, user)
                                                         try
                                                             this.Hide() 
                                                             form.ShowDialog() |> ignore 
@@ -413,3 +480,7 @@ type LoginForm(handler: MyFormHandler) as this =
         )
 
         base.AcceptButton <- loginButton
+
+    // Public methods to access the input values
+    member this.FormHandlers = handler
+

@@ -72,6 +72,7 @@ type MyFormHandler() =
 
     let availableClasses = [1; 2; 3]
 
+    member this.UserNameExist (username:string) : bool = List.contains username (List.map (fun x-> x.Username) users)
 
     member this.FinalGrade = 100
 
@@ -150,6 +151,7 @@ type MyFormHandler() =
     member this.GetSummaryInClass (classId:int) = 
             let students = this.GetStudentsInClass classId
             let mutable gradesSeq = Seq.empty<(Subject*int)>
+            let mutable max_low_sub = Map.empty<Subject,(int*int)> 
             students |>
             List.iter<Student> (fun student -> 
                let studentGrades = (Map.toSeq student.Grades)  
@@ -165,4 +167,23 @@ type MyFormHandler() =
                     let avg = grades |> List.map (fun x -> float x) |> List.average 
                     (subject, maxGrade, minGrade, avg)) // Return a tuple with Subject, Max, and Min grades
             subjectStats
+
+    
+    member this.IsNullOrEmptyString(str:string) : bool = match str with
+                                                            | "" -> true
+                                                            | null -> true
+                                                            | _ -> false
+
+    member this.CreateAdmin (username:string) (password:string) : bool = 
+        if this.UserNameExist username || this.IsNullOrEmptyString username || this.IsNullOrEmptyString password  then false 
+        else 
+            let newAdminId = List.tryLast (List.map (fun x-> x.ID) users)
+            match newAdminId with
+                | None -> false
+                | Some id -> 
+                            let newAdmin = {ID = id + 1 ; Username = username ; Password = password ; Role = Admin }
+                            users <-  users @ [newAdmin]
+                            true
+                            
+                        
             
