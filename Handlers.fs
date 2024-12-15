@@ -1,11 +1,10 @@
 ﻿module Handlers
 
-open System.Windows.Forms
 open Types
 
-type MyFormHandler() = 
+type MyFormHandler(usersDb: User list, studentDb: Student list ) = 
 
-    let mutable users: Types.User list = [
+(*    let mutable users: Types.User list = [
         {  ID = 1; Username = "abdo123" ; Password = "123";  Role = Types.UserRole.Admin}
         {  ID = 2; Username = "aly123" ;  Password = "123" ; Role = Types.UserRole.Student}
         {  ID = 3; Username = "Seif430" ; Password = "123" ; Role = Types.UserRole.Student}
@@ -13,10 +12,6 @@ type MyFormHandler() =
         {  ID = 5; Username = "Sherif555";Password = "123";  Role = Types.UserRole.Student}
         {  ID = 6; Username = "Salma147" ;Password = "123" ; Role = Types.UserRole.Student}
     ]
-
-
-
-
     let mutable students: Types.Student list =[
         {
             User = users.[1] ; 
@@ -67,12 +62,19 @@ type MyFormHandler() =
                         .Add(Types.Subject.Science, 89)
             ClassId = 2
         }
-    ] 
+    ] *)
     
+
+    let mutable users = usersDb
+    let mutable students = studentDb
+
 
     let availableClasses = [1; 2; 3]
 
     let NextAvailableId() = List.tryLast (List.map (fun x-> x.ID) users)
+
+    member this.GetUsers() = 
+        users
 
     member this.UserNameExist (username:string) : bool = List.contains username (List.map<User,string> (fun x-> x.Username) users)
 
@@ -96,6 +98,8 @@ type MyFormHandler() =
         match List.tryFind (fun x -> x.User.ID = id) students with
                 | Some user -> Some user
                 | _ -> None
+
+
 
     member this.CalcStudentAvg(student: Student) = 
         let average =
@@ -167,7 +171,6 @@ type MyFormHandler() =
     member this.GetSummaryInClass (classId:int) = 
             let students = this.GetStudentsInClass classId
             let mutable gradesSeq = Seq.empty<(Subject*int)>
-            let mutable max_low_sub = Map.empty<Subject,(int*int)> 
             students |>
             List.iter<Student> (fun student -> 
                let studentGrades = (Map.toSeq student.Grades)  
@@ -201,7 +204,7 @@ type MyFormHandler() =
                             users <-  users @ [newAdmin]
                             true
 
-    member this.CreateStudent(studentDTO: StudentFormDTO) =  
+    member this.CreateStudent(studentDTO: StudentFormDTO) = 
         let newId  = NextAvailableId()
         match newId with
                 | None -> false
@@ -213,15 +216,17 @@ type MyFormHandler() =
                             true
 
     member this.EditStudent(studentDTO: StudentFormDTO)  id = 
-        let studentOption = this.GetStudent id        
+        let studentOption = this.GetStudent id
+        
         match studentOption with
             | Some student -> 
+                            
                             let user = {ID = id ; Username = studentDTO.Username; Password= studentDTO.Password; Role = Student} 
                             users <- users |> 
                             List.map(fun userIter ->
                                 if userIter.ID = id then user else userIter
                             )
-                            let student = {User = user ; ClassId = id; Grades=studentDTO.Grades}
+                            let student = {User = user ; ClassId = studentDTO.ClassId; Grades=studentDTO.Grades}
                             students <- students |> 
                             List.map(fun studentIter ->
                                 if studentIter.User.ID = id then student else studentIter
@@ -233,6 +238,27 @@ type MyFormHandler() =
     member this.DeleteStudent(studentId:int) = 
         students <- students |> List.where (fun student -> student.User.ID <> studentId)
         users <- users |> List.where (fun student -> student.ID <> studentId)
+
+    // TODO only superAdmin
+    member this.DeleteAdmin(adminId:int) = 
+        if adminId = 1  then false 
+        else
+            users <- users |> List.where (fun admin -> admin.ID <> adminId)
+            true
+
+     // TODO only superAdmin
+    member this.EditAdmin ( id:int) username password  = 
+        if id = 1  then (None)
+        else
+            let admin = {ID = id ; Username = username; Password=password; Role = Admin} 
+            users <- users |> 
+                    List.map(fun userIter ->
+                        if userIter.ID = id then admin else userIter
+                    )
+            (Some admin)
+
+    member this.GetAdmin id = 
+        users |> List.filter (fun user -> user.Role = Admin ) |> List.tryFind (fun adm -> adm.ID = id)
                             
                         
 (*type User = {

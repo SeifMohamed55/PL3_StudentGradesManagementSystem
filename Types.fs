@@ -4,7 +4,7 @@ type UserRole =
         | Admin
         | Student
 
-// Define the User record 
+// Define the User record
 type User = {
     ID: int
     Username: string
@@ -31,11 +31,4 @@ type SubjectStats = {
     SubjectName: Subject
     PassCount: int
     FailCount: int
-}
-
-type StudentFormDTO = {
-    Username: string
-    Password: string
-    ClassId: int
-    Grades: Map<Subject, int>
 }
