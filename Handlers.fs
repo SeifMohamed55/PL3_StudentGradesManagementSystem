@@ -2,9 +2,9 @@
 
 open Types
 
-type MyFormHandler(usersDb: User list, studentDb: Student list ) = 
+type MyFormHandler() = 
 
-(*    let mutable users: Types.User list = [
+    let mutable users: Types.User list = [
         {  ID = 1; Username = "abdo123" ; Password = "123";  Role = Types.UserRole.Admin}
         {  ID = 2; Username = "aly123" ;  Password = "123" ; Role = Types.UserRole.Student}
         {  ID = 3; Username = "Seif430" ; Password = "123" ; Role = Types.UserRole.Student}
@@ -62,11 +62,11 @@ type MyFormHandler(usersDb: User list, studentDb: Student list ) =
                         .Add(Types.Subject.Science, 89)
             ClassId = 2
         }
-    ] *)
+    ] 
     
-
+(*
     let mutable users = usersDb
-    let mutable students = studentDb
+    let mutable students = studentDb*)
 
 
     let availableClasses = [1; 2; 3]
@@ -136,7 +136,6 @@ type MyFormHandler(usersDb: User list, studentDb: Student list ) =
         users |> List.filter (fun user -> user.Role = Admin)
 
     member this.GetStudentsPassMap(students: Student list) =
-         let listFinal = []
          let mutable passMap = Map.ofList [(Subject.Arabic, 0) ; (Subject.Math, 0); (Subject.English, 0); (Subject.Science, 0)]
          List.iter<Student> (fun student -> 
             (Map.toSeq student.Grades) |>
