@@ -139,10 +139,6 @@ type StudentForm(handler: MyFormHandler, user: User) =
     let button2 = new Button(Text = "Class Summary", Width = 100, Height = 30)
 
 
-
-    // Name : centered
-    // avg for student: center
-    // padding then (subject: grade) 2 2
     do
         studentName.Font <- new Font(studentName.Font.FontFamily, 14.0f, FontStyle.Bold)
         studentName.TextAlign <- ContentAlignment.TopCenter
@@ -220,18 +216,6 @@ type StudentForm(handler: MyFormHandler, user: User) =
 
 
 
-        // delete
-type SampleForm(title: string) =
-    inherit Form()
-
-    do
-        base.Text <- title
-        base.Size <- new Size(300, 200)
-        base.StartPosition <- FormStartPosition.CenterScreen
-        let label = new Label(Text = $"Welcome to {title}", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter)
-        base.Controls.Add(label)
-
-
 type ClassNumberQuestionForm(handler: MyFormHandler, formType: System.Type) as this =
     inherit Form(StartPosition=FormStartPosition.CenterParent) 
     
@@ -262,8 +246,8 @@ type ClassNumberQuestionForm(handler: MyFormHandler, formType: System.Type) as t
                 let form = Activator.CreateInstance(formType ,objArr)
 
                 let method = formType.GetMethod("ShowDialog", Type.EmptyTypes);                
-
                 this.Close()
+
                 method.Invoke(form, null) |> ignore 
             
             with
@@ -414,6 +398,9 @@ type AddEditStudentForm(handler: MyFormHandler, studentPlaceHolder: Student opti
                         MessageBox.Show("Username is required.") |> ignore
 
                     elif (handler.UserNameExist username) && (studentPlaceHolder.IsSome) && (studentPlaceHolder.Value.User.Username <> username) then
+                        MessageBox.Show("Username is already taken.") |> ignore
+
+                    elif (handler.UserNameExist username) && (studentPlaceHolder.IsNone) then
                         MessageBox.Show("Username is already taken.") |> ignore
 
                     elif handler.IsNullOrEmptyString(password) then
@@ -626,10 +613,6 @@ type EditAdminForm(handler: MyFormHandler, adminPlaceHolder:User) as this =
 
 
 
-
-
-
-
 type ViewAdminsForm(handler: MyFormHandler, holdingAdmin: User) as this =
     inherit Form(Text = "Admins", Width = 800, Height = 600)
 
@@ -678,28 +661,31 @@ type ViewAdminsForm(handler: MyFormHandler, holdingAdmin: User) as this =
             
             // Handle Button Click Events
             dataGridView.CellContentClick.Add(fun e ->
-                if e.RowIndex >= 0 && e.RowIndex < dataGridView.RowCount - 1 then
-                    let adminId = dataGridView.Rows[e.RowIndex].Cells.[0].Value :?> int
-                    match e.ColumnIndex with
-                    | x when x = editButCol -> // Edit button column index
-                        let adminOption = handler.GetAdmin adminId
-                        match adminOption with
-                            | Some admin ->
-                                    let editForm = new EditAdminForm(handler, admin)
-                                    editForm.ShowDialog() |> ignore
-                                    dataGridView.Rows[e.RowIndex].Cells.[0].Value <- editForm.EditedAdmin.ID
-                                    dataGridView.Rows[e.RowIndex].Cells.[1].Value <- editForm.EditedAdmin.Username
-                                    dataGridView.Rows[e.RowIndex].Cells.[2].Value <- editForm.EditedAdmin.Password
+                if holdingAdmin.ID <> 1 then
+                    MessageBox.Show($"Only SuperAdmin can edit or delete other admins") |> ignore
+                else
+                    if e.RowIndex >= 0 && e.RowIndex < dataGridView.RowCount - 1 then
+                        let adminId = dataGridView.Rows[e.RowIndex].Cells.[0].Value :?> int
+                        match e.ColumnIndex with
+                        | x when x = editButCol -> // Edit button column index
+                            let adminOption = handler.GetAdmin adminId
+                            match adminOption with
+                                | Some editedAdmin ->
+                                        let editForm = new EditAdminForm(handler, editedAdmin)
+                                        editForm.ShowDialog() |> ignore
+                                        dataGridView.Rows[e.RowIndex].Cells.[0].Value <- editForm.EditedAdmin.ID
+                                        dataGridView.Rows[e.RowIndex].Cells.[1].Value <- editForm.EditedAdmin.Username
+                                        dataGridView.Rows[e.RowIndex].Cells.[2].Value <- editForm.EditedAdmin.Password
 
-                            | None -> ignore()
-                    | y when y = removeButCol -> // Remove button column index
-                        match handler.DeleteAdmin(adminId) with 
-                            | true ->
-                                    dataGridView.Rows.RemoveAt(e.RowIndex)
-                                    MessageBox.Show($"Admin {adminId} removed Successfully") |> ignore
-                            | false -> MessageBox.Show($"Cannot Delete SuperAdmin") |> ignore
+                                | None -> ignore()
+                        | y when y = removeButCol -> // Remove button column index
+                            match handler.DeleteAdmin(adminId) with 
+                                | true ->
+                                        dataGridView.Rows.RemoveAt(e.RowIndex)
+                                        MessageBox.Show($"Admin {adminId} removed Successfully") |> ignore
+                                | false -> MessageBox.Show($"Cannot Delete SuperAdmin") |> ignore
 
-                    | _ -> ()
+                        | _ -> ()
             )
 
             this.Controls.Add(dataGridView)
@@ -707,10 +693,6 @@ type ViewAdminsForm(handler: MyFormHandler, holdingAdmin: User) as this =
         with
             | exn ->
                 MessageBox.Show("Something went wrong!") |> ignore
-
-
-
-
 
 
 
@@ -723,9 +705,7 @@ type AdminForm(handler: MyFormHandler, admin: User) =
      let buttonWidth = 150
      let leftMargin, rightMargin = 30, 300
      let verticalSpacing = 20
-     let buttonTitles = [ "Add Student"; "Add Admin"; "View Users"; "View Admins"; "View Statistics";  "View Summary"]
-
-
+     let buttonTitles = [ "Add Student"; "Add Admin"; "View Students"; "View Admins"; "View Statistics";  "View Summary"]
 
      do
         usernameLabel.Font <- new Font(usernameLabel.Font.FontFamily, 14.0f, FontStyle.Bold)
@@ -749,7 +729,7 @@ type AdminForm(handler: MyFormHandler, admin: User) =
                                                         let form = new AddAdminForm(handler)
                                                         form.ShowDialog() |> ignore
                                                   )
-                            | "View Users" -> button.Click.Add(fun _ ->
+                            | "View Students" -> button.Click.Add(fun _ ->
                                                             let form = new ViewUsersForm(handler)
                                                             form.ShowDialog() |> ignore
                                                    )
@@ -792,12 +772,9 @@ type LoginForm(handler: MyFormHandler) as this =
     // Constructor to initialize the form
     do
         
-
         usernameLabel.Location <- Point(80, 30)
         usernameTextBox.Location <- Point(150, 30)
         usernameTextBox.Width <- 120
-
-
 
         passwordLabel.Location <- Point(80, 70)
         passwordTextBox.Location <- Point(150, 70)
@@ -848,4 +825,3 @@ type LoginForm(handler: MyFormHandler) as this =
 
     // Public methods to access the input values
     member this.FormHandlers = handler
-

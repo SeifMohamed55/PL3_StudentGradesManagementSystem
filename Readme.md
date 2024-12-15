@@ -31,7 +31,4 @@ The project is divided into several tasks. Below is the progress status:
 - **Task 13:** Update Add Student Form to Include Edit Functionality
 - **Task 14:** Delete/Edit Admin Form
 - **Task 15:** Apply Final Touches
-
-
-### Tasks In Progress
 - **Task 16:** Update Main Final Project with JSON File Database Integration

@@ -2,9 +2,9 @@
 
 open Types
 
-type MyFormHandler() = 
+type MyFormHandler(usersDb: User list, studentDb: Student list ) = 
 
-    let mutable users: Types.User list = [
+(*    let mutable users: Types.User list = [
         {  ID = 1; Username = "abdo123" ; Password = "123";  Role = Types.UserRole.Admin}
         {  ID = 2; Username = "aly123" ;  Password = "123" ; Role = Types.UserRole.Student}
         {  ID = 3; Username = "Seif430" ; Password = "123" ; Role = Types.UserRole.Student}
@@ -62,11 +62,11 @@ type MyFormHandler() =
                         .Add(Types.Subject.Science, 89)
             ClassId = 2
         }
-    ] 
+    ] *)
     
-(*
+
     let mutable users = usersDb
-    let mutable students = studentDb*)
+    let mutable students = studentDb
 
 
     let availableClasses = [1; 2; 3]
@@ -90,7 +90,7 @@ type MyFormHandler() =
         | Student -> false
 
     member this.Login(username, password) = 
-             match List.tryFind<User> (fun x -> x.Username = username) users with
+             match List.tryFind<User> (fun y -> y.Username = username) users with
                 | Some user when user.Password = password -> Some user
                 | _ -> None
 
@@ -127,7 +127,7 @@ type MyFormHandler() =
 
 
     member this.GetStudentsInClass(classId: int) = 
-         List.filter (fun (x:Student) -> x.ClassId = classId) students
+         List.filter<Student> (fun (x) -> x.ClassId = classId) students
 
     member this.GetStudents() = 
          students
@@ -238,14 +238,12 @@ type MyFormHandler() =
         students <- students |> List.where (fun student -> student.User.ID <> studentId)
         users <- users |> List.where (fun student -> student.ID <> studentId)
 
-    // TODO only superAdmin
     member this.DeleteAdmin(adminId:int) = 
         if adminId = 1  then false 
         else
             users <- users |> List.where (fun admin -> admin.ID <> adminId)
             true
 
-     // TODO only superAdmin
     member this.EditAdmin ( id:int) username password  = 
         if id = 1  then (None)
         else
@@ -260,10 +258,3 @@ type MyFormHandler() =
         users |> List.filter (fun user -> user.Role = Admin ) |> List.tryFind (fun adm -> adm.ID = id)
                             
                         
-(*type User = {
-    ID: int
-    Username: string
-    Password: string
-    Role: UserRole
-}
-*)
