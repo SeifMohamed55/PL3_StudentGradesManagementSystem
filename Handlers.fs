@@ -201,7 +201,7 @@ type MyFormHandler() =
                             users <-  users @ [newAdmin]
                             true
 
-    member this.CreateStudent(studentDTO: StudentFormDTO) = 
+    member this.CreateStudent(studentDTO: StudentFormDTO) =  
         let newId  = NextAvailableId()
         match newId with
                 | None -> false

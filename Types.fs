@@ -4,7 +4,7 @@ type UserRole =
         | Admin
         | Student
 
-// Define the User record
+// Define the User record 
 type User = {
     ID: int
     Username: string

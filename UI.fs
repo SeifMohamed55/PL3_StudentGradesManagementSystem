@@ -390,7 +390,7 @@ type AddEditStudentForm(handler: MyFormHandler, studentPlaceHolder: Student opti
                                 )
                 | _ -> ignore()
 
-            // Add controls to the form
+            // Add controls to the form 
             this.Controls.AddRange([|
                 usernameLabel; usernameTextBox
                 passwordLabel; passwordTextbox
