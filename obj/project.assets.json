@@ -187,11 +187,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
+      "projectUniqueName": "I:\\Github\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
       "projectName": "PL3_StudentGradesManagementSystem",
-      "projectPath": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
+      "projectPath": "I:\\Github\\PL3_StudentGradesManagementSystem\\PL3_StudentGradesManagementSystem.fsproj",
       "packagesPath": "C:\\Users\\seife\\.nuget\\packages\\",
-      "outputPath": "L:\\Seif\\FCAI\\4- Year Four\\First Semester\\PL3\\Project\\PL3_StudentGradesManagementSystem\\obj\\",
+      "outputPath": "I:\\Github\\PL3_StudentGradesManagementSystem\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
