@@ -16,22 +16,22 @@ This project is a **Student Grades Management System** built using the **functio
 The project is divided into several tasks. Below is the progress status:
 
 ### Completed Tasks
-- **Task 2:** Add Login Form
-- **Task 3:** Add Student Form
-- **Task 4:** Update Student Form
-- **Task 5:** Add Statistics Form
-- **Task 6:** Update Statistics Form
-- **Task 7:** Create Admin Form
-- **Task 8:** Update Admin Form
-- **Task 9:** Add Summary Form
-- **Task 10:** Re-Update Statistics Form
-- **Task 11:** Add Admin Form
-- **Task 12:** Add Student Form
-- **Task 13:** Add View Student Form
-- **Task 14:** Update Add Student Form to Include Edit Functionality
-- **Task 15:** Delete/Edit Admin Form
+- **Task 1:** Add Login Form
+- **Task 2:** Add Student Form
+- **Task 3:** Update Student Form
+- **Task 4:** Add Statistics Form
+- **Task 5:** Update Statistics Form
+- **Task 6:** Create Admin Form
+- **Task 7:** Update Admin Form
+- **Task 8:** Add Summary Form
+- **Task 9:** Re-Update Statistics Form
+- **Task 10:** Add Admin Form
+- **Task 11:** Add Student Form
+- **Task 12:** Add View Student Form
+- **Task 13:** Update Add Student Form to Include Edit Functionality
+- **Task 14:** Delete/Edit Admin Form
 
 
 ### Tasks In Progress
-- **Task 16:** Apply Final Touches
-- **Task 17:** Update Main Final Project with JSON File Database Integration
+- **Task 15:** Apply Final Touches
+- **Task 16:** Update Main Final Project with JSON File Database Integration
